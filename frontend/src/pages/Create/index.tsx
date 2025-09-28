@@ -183,14 +183,18 @@ const CreatePage: React.FC = () => {
 
       console.log('Phase 1.5: マイクロサービス直接呼び出し開始:', kanteiRequest);
 
-      // 九星気学計算
-      const kyuseiResult = await kyuseiKigakuAPI.calculate(kanteiRequest);
+      // 九星気学計算（正しいフォーマット）
+      const kyuseiData = {
+        birthDate: formData.birthDate,
+        currentDate: new Date().toISOString().split('T')[0]
+      };
+      const kyuseiResult = await kyuseiKigakuAPI.calculate(kyuseiData);
       console.log('九星気学結果:', kyuseiResult);
 
-      // 姓名判断計算
+      // 姓名判断計算（正しいフォーマット）
       const seimeiData = {
-        surname: formData.surname,
-        given_name: formData.givenName
+        sei: formData.surname,
+        mei: formData.givenName
       };
       const seimeiResult = await seimeiHandanAPI.calculate(seimeiData);
       console.log('姓名判断結果:', seimeiResult);

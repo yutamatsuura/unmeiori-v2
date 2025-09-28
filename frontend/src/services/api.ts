@@ -176,8 +176,8 @@ export const authAPI = {
 };
 
 export const kyuseiKigakuAPI = {
-  calculate: async (data: KanteiRequest): Promise<KyuseiKigakuResponse> => {
-    const response = await kyuseiAPI.post('/calculate', data);
+  calculate: async (data: { birthDate: string; currentDate: string }): Promise<KyuseiKigakuResponse> => {
+    const response = await kyuseiAPI.post('/kyusei/calculate', data);
     return response.data;
   },
 };
