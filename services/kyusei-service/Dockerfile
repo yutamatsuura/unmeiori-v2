@@ -3,14 +3,11 @@ FROM node:18-alpine
 # 作業ディレクトリを設定
 WORKDIR /app
 
-# package.jsonとpackage-lock.jsonをコピー
-COPY package*.json ./
+# アプリケーションコードをコピー
+COPY . .
 
 # 本番用依存関係のみをインストール
 RUN npm install --production
-
-# アプリケーションコードをコピー
-COPY . .
 
 # Cloud Runのポートを公開（環境変数PORTまたはデフォルト8080）
 EXPOSE 8080
