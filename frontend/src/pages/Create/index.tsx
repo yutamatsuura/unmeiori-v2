@@ -66,10 +66,10 @@ interface CalculationResult {
 
 const CreatePage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    surname: '松浦',
-    givenName: '悠太',
-    birthDate: '1980-01-01',
-    gender: 'male',
+    surname: '',
+    givenName: '',
+    birthDate: '',
+    gender: '',
     email: 'test@example.com'
   });
 
