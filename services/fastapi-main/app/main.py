@@ -1,48 +1,24 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
-from app.api import auth, kantei, template, pdf
-# from app.routes import word_export  # 一時的に無効化
-from app.core.database import engine
-from app.models import Base
-
-# テーブル作成（開発時のみ、Cloud Runでは完全スキップ）
 import os
-if os.getenv("NODE_ENV") == "development":
-    try:
-        Base.metadata.create_all(bind=engine)
-    except Exception as e:
-        print(f"Warning: Could not create tables in development: {e}")
-# Cloud Run環境では実行しない
 
+# 最小設定でCloud Run起動確認
 app = FastAPI(
-    title=settings.app_name,
+    title="Kantei FastAPI Service",
     description="鑑定統合APIサービス - 九星気学と姓名判断の統合鑑定システム",
-    version="1.0.0",
-    debug=settings.debug
+    version="1.0.0"
 )
 
-# CORS設定
-allowed_origins = [
-    getattr(settings, 'cors_origin', 'http://localhost:3001'),
-    "http://localhost:3001",  # 開発環境用
-    "http://127.0.0.1:3001",  # 開発環境用
-]
-
+# 基本CORS設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
-# APIルーターを登録
-app.include_router(auth.router, prefix="/api/auth", tags=["認証"])
-app.include_router(kantei.router, prefix="/api/kantei", tags=["鑑定"])
-app.include_router(template.router, prefix="/api/template", tags=["テンプレート"])
-app.include_router(pdf.router, prefix="/api/pdf", tags=["PDF"])
-# app.include_router(word_export.router, prefix="/api", tags=["Word出力"])  # 一時的に無効化
+# Cloud Run起動確認後に他の設定を段階的に追加
 
 
 @app.get("/")
