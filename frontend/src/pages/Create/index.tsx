@@ -203,8 +203,10 @@ const CreatePage: React.FC = () => {
       // 姓名判断APIは {success: true, data: {...}} を返すので、
       // Previewページで期待される形式に変換
       const seimeiData = seimeiResult.data || seimeiResult;
+      // Phase 1.5: 簡易的な連番ID生成（1-999の範囲）
+      const simpleId = Math.floor(Math.random() * 999) + 1;
       const result = {
-        id: Date.now(), // 仮のID
+        id: simpleId, // 簡易的な3桁ID
         kyusei_result: kyuseiResult,
         seimei_result: {
           total: seimeiData.kakusu?.soukaku,
