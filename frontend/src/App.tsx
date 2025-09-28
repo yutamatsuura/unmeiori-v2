@@ -55,7 +55,7 @@ function App() {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/create" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/create" element={<CreatePage />} />
           <Route path="/preview/:id" element={<PreviewPage />} />
