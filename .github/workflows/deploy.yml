@@ -29,26 +29,7 @@ jobs:
     - name: Configure Docker
       run: gcloud auth configure-docker
 
-    # FastAPI 統合サービスのデプロイ
-    - name: Build and Deploy FastAPI Service
-      run: |
-        cd services/fastapi-main
-        docker build -t gcr.io/$GCP_PROJECT_ID/unmeiori-api .
-        docker push gcr.io/$GCP_PROJECT_ID/unmeiori-api
-        gcloud run deploy unmeiori-api \
-          --image gcr.io/$GCP_PROJECT_ID/unmeiori-api \
-          --region $GCP_REGION \
-          --allow-unauthenticated \
-          --memory 2Gi \
-          --cpu 1 \
-          --max-instances 10 \
-          --set-env-vars DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-          --set-env-vars JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
-          --set-env-vars CORS_ORIGIN="${{ secrets.CORS_ORIGIN }}" \
-          --set-env-vars KYUSEI_SERVICE_URL="https://kyusei-service-XXXXXXXX-an.a.run.app" \
-          --set-env-vars SEIMEI_SERVICE_URL="https://seimei-service-XXXXXXXX-an.a.run.app"
-
-    # 九星気学サービスのデプロイ
+    # 九星気学サービスのデプロイ（最初）
     - name: Build and Deploy Kyusei Service
       run: |
         cd services/kyusei-service
@@ -62,7 +43,7 @@ jobs:
           --cpu 0.5 \
           --max-instances 5
 
-    # 姓名判断サービスのデプロイ
+    # 姓名判断サービスのデプロイ（次）
     - name: Build and Deploy Seimei Service
       run: |
         cd services/seimei-service
@@ -75,6 +56,30 @@ jobs:
           --memory 1Gi \
           --cpu 0.5 \
           --max-instances 5
+
+    # FastAPI 統合サービスのデプロイ（最後）
+    - name: Get Microservice URLs and Deploy FastAPI Service
+      run: |
+        # マイクロサービスのURLを取得
+        KYUSEI_URL=$(gcloud run services describe kyusei-service --region=$GCP_REGION --format="get(status.url)")
+        SEIMEI_URL=$(gcloud run services describe seimei-service --region=$GCP_REGION --format="get(status.url)")
+
+        # FastAPIサービスをデプロイ
+        cd services/fastapi-main
+        docker build -t gcr.io/$GCP_PROJECT_ID/unmeiori-api .
+        docker push gcr.io/$GCP_PROJECT_ID/unmeiori-api
+        gcloud run deploy unmeiori-api \
+          --image gcr.io/$GCP_PROJECT_ID/unmeiori-api \
+          --region $GCP_REGION \
+          --allow-unauthenticated \
+          --memory 2Gi \
+          --cpu 1 \
+          --max-instances 10 \
+          --set-env-vars DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+          --set-env-vars JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
+          --set-env-vars CORS_ORIGIN="${{ secrets.CORS_ORIGIN }}" \
+          --set-env-vars KYUSEI_SERVICE_URL="$KYUSEI_URL" \
+          --set-env-vars SEIMEI_SERVICE_URL="$SEIMEI_URL"
 
     # サービスURLの出力
     - name: Get Service URLs

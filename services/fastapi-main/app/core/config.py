@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env.local"
         case_sensitive = False
+        # Cloud Runでの環境変数読み込みを優先
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()
