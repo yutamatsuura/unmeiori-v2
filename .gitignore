@@ -118,7 +118,6 @@ venv.bak/
 
 # Google Cloud credentials
 key.json
-*.json
 service-account-key.json
 
 # macOS
