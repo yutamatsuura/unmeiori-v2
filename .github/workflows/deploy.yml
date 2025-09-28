@@ -32,8 +32,7 @@ jobs:
     # 九星気学サービスのデプロイ（最初）
     - name: Build and Deploy Kyusei Service
       run: |
-        cd services/kyusei-service
-        docker build -t gcr.io/$GCP_PROJECT_ID/kyusei-service .
+        docker build -f services/kyusei-service/Dockerfile -t gcr.io/$GCP_PROJECT_ID/kyusei-service services/kyusei-service
         docker push gcr.io/$GCP_PROJECT_ID/kyusei-service
         gcloud run deploy kyusei-service \
           --image gcr.io/$GCP_PROJECT_ID/kyusei-service \
@@ -46,8 +45,7 @@ jobs:
     # 姓名判断サービスのデプロイ（次）
     - name: Build and Deploy Seimei Service
       run: |
-        cd services/seimei-service
-        docker build -t gcr.io/$GCP_PROJECT_ID/seimei-service .
+        docker build -f services/seimei-service/Dockerfile -t gcr.io/$GCP_PROJECT_ID/seimei-service services/seimei-service
         docker push gcr.io/$GCP_PROJECT_ID/seimei-service
         gcloud run deploy seimei-service \
           --image gcr.io/$GCP_PROJECT_ID/seimei-service \
@@ -65,8 +63,7 @@ jobs:
         SEIMEI_URL=$(gcloud run services describe seimei-service --region=$GCP_REGION --format="get(status.url)")
 
         # FastAPIサービスをデプロイ
-        cd services/fastapi-main
-        docker build -t gcr.io/$GCP_PROJECT_ID/unmeiori-api .
+        docker build -f services/fastapi-main/Dockerfile -t gcr.io/$GCP_PROJECT_ID/unmeiori-api services/fastapi-main
         docker push gcr.io/$GCP_PROJECT_ID/unmeiori-api
         gcloud run deploy unmeiori-api \
           --image gcr.io/$GCP_PROJECT_ID/unmeiori-api \
