@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "module": "commonjs",
+    "target": "es2015",
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "vue": [
+        "/node_modules/vue/types/index"
+      ],
+      "vue-class-component": [
+        "/node_modules/vue-class-component/lib/index"
+      ],
+      "vue-property-decorator": [
+        "/node_modules/vue-property-decorator/lib/vue-property-decorator"
+      ]
+    },
+  }
+}

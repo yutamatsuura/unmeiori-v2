@@ -10,6 +10,7 @@ import JikanEto from './src/bans/units/JikanEto';
 
 const app = express();
 const PORT = process.env.PORT || 5002;
+const HOST = process.env.HOST || '0.0.0.0';
 
 // ミドルウェア
 app.use(cors());
@@ -345,6 +346,6 @@ app.post('/kyusei/kichihoui', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Kyusei Service running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Kyusei Service running on ${HOST}:${PORT}`);
 });

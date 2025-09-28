@@ -1,0 +1,102 @@
+{
+  "timestamp": "2025-09-23T14:10:32.994Z",
+  "summary": {
+    "total": 25,
+    "match": 0,
+    "diff": 0,
+    "failed": 25,
+    "matchRate": "0.0%"
+  },
+  "details": [
+    {
+      "name": "田中太郎",
+      "kigakuNavi": {
+        "天格": 9,
+        "人格": 8,
+        "地格": 14,
+        "外格": null,
+        "総格": 23
+      },
+      "localhost": {
+        "天格": null,
+        "人格": null,
+        "地格": null,
+        "外格": null,
+        "総格": null
+      },
+      "differences": []
+    },
+    {
+      "name": "佐藤花子",
+      "kigakuNavi": {
+        "天格": 26,
+        "人格": 27,
+        "地格": 11,
+        "外格": null,
+        "総格": 37
+      },
+      "localhost": {
+        "天格": null,
+        "人格": null,
+        "地格": null,
+        "外格": null,
+        "総格": null
+      },
+      "differences": []
+    },
+    {
+      "name": "山田一",
+      "kigakuNavi": {
+        "天格": 8,
+        "人格": 6,
+        "地格": 1,
+        "外格": null,
+        "総格": 9
+      },
+      "localhost": {
+        "天格": null,
+        "人格": null,
+        "地格": null,
+        "外格": null,
+        "総格": null
+      },
+      "differences": []
+    },
+    {
+      "name": "鈴木健太",
+      "kigakuNavi": {
+        "天格": 17,
+        "人格": 15,
+        "地格": 15,
+        "外格": null,
+        "総格": 32
+      },
+      "localhost": {
+        "天格": null,
+        "人格": null,
+        "地格": null,
+        "外格": null,
+        "総格": null
+      },
+      "differences": []
+    },
+    {
+      "name": "高橋美咲",
+      "kigakuNavi": {
+        "天格": 26,
+        "人格": 25,
+        "地格": 18,
+        "外格": null,
+        "総格": 44
+      },
+      "localhost": {
+        "天格": null,
+        "人格": null,
+        "地格": null,
+        "外格": null,
+        "総格": null
+      },
+      "differences": []
+    }
+  ]
+}

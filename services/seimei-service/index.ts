@@ -4,6 +4,7 @@ import SeimeiAnalysisService, { AnalysisRequest } from './src/services/seimei-an
 
 const app = express();
 const PORT = process.env.PORT || 5003;
+const HOST = process.env.HOST || '0.0.0.0';
 
 // サービスインスタンス
 const seimeiAnalysisService = new SeimeiAnalysisService();
@@ -264,6 +265,6 @@ app.delete('/seimei/cache', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Seimei Service running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Seimei Service running on ${HOST}:${PORT}`);
 });

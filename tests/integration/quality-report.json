@@ -1,0 +1,138 @@
+{
+  "totalTests": 123,
+  "successCount": 103,
+  "errorRate": 16.260162601626014,
+  "successRate": 83.73983739837398,
+  "avgProcessingTime": 444.3983739837398,
+  "maxProcessingTime": 1274,
+  "criteria": {
+    "123項目完了": true,
+    "エラー率0%達成": false,
+    "平均レスポンス3秒未満": true,
+    "最大レスポンス5秒未満": true,
+    "成功率95%以上": false
+  },
+  "overallQuality": false,
+  "failedTests": [
+    {
+      "name": "KAKUSU-01: 田中の画数",
+      "success": false,
+      "processingTime": 158,
+      "error": "Expected tenkaku 9, got 5"
+    },
+    {
+      "name": "KAKUSU-02: 佐藤の画数",
+      "success": false,
+      "processingTime": 909,
+      "error": "Expected tenkaku 25, got 7"
+    },
+    {
+      "name": "KAKUSU-03: 山田の画数",
+      "success": false,
+      "processingTime": 1119,
+      "error": "Expected tenkaku 8, got 3"
+    },
+    {
+      "name": "KAKUSU-04: 高橋の画数",
+      "success": false,
+      "processingTime": 895,
+      "error": "Expected tenkaku 26, got 10"
+    },
+    {
+      "name": "KAKUSU-05: 小林の画数",
+      "success": false,
+      "processingTime": 1009,
+      "error": "Expected tenkaku 11, got 3"
+    },
+    {
+      "name": "KAKUSU-06: 中村の画数",
+      "success": false,
+      "processingTime": 996,
+      "error": "Expected tenkaku 11, got 4"
+    },
+    {
+      "name": "KAKUSU-07: 伊藤の画数",
+      "success": false,
+      "processingTime": 1011,
+      "error": "Expected tenkaku 24, got 6"
+    },
+    {
+      "name": "KAKUSU-08: 加藤の画数",
+      "success": false,
+      "processingTime": 1060,
+      "error": "Expected tenkaku 23, got 5"
+    },
+    {
+      "name": "KAKUSU-09: 吉田の画数",
+      "success": false,
+      "processingTime": 977,
+      "error": "Expected tenkaku 11, got 6"
+    },
+    {
+      "name": "KAKUSU-10: 和田の画数",
+      "success": false,
+      "processingTime": 954,
+      "error": "Expected tenkaku 13, got 8"
+    },
+    {
+      "name": "KAKUSU-11: 石川の画数",
+      "success": false,
+      "processingTime": 1099,
+      "error": "Expected tenkaku 8, got 5"
+    },
+    {
+      "name": "KAKUSU-12: 前田の画数",
+      "success": false,
+      "processingTime": 952,
+      "error": "Expected tenkaku 14, got 9"
+    },
+    {
+      "name": "KAKUSU-13: 藤原の画数",
+      "success": false,
+      "processingTime": 1004,
+      "error": "Expected tenkaku 28, got 18"
+    },
+    {
+      "name": "KAKUSU-14: 西村の画数",
+      "success": false,
+      "processingTime": 967,
+      "error": "Expected tenkaku 13, got 6"
+    },
+    {
+      "name": "KAKUSU-15: 松本の画数",
+      "success": false,
+      "processingTime": 1049,
+      "error": "Expected tenkaku 13, got 8"
+    },
+    {
+      "name": "KAKUSU-16: 井上の画数",
+      "success": false,
+      "processingTime": 991,
+      "error": "Expected tenkaku 7, got 10"
+    },
+    {
+      "name": "KAKUSU-17: 木村の画数",
+      "success": false,
+      "processingTime": 963,
+      "error": "Expected tenkaku 11, got 4"
+    },
+    {
+      "name": "KAKUSU-18: 清水の画数",
+      "success": false,
+      "processingTime": 1043,
+      "error": "Expected tenkaku 15, got 11"
+    },
+    {
+      "name": "KAKUSU-19: 森田の画数",
+      "success": false,
+      "processingTime": 991,
+      "error": "Expected tenkaku 17, got 12"
+    },
+    {
+      "name": "KAKUSU-20: 池田の画数",
+      "success": false,
+      "processingTime": 1032,
+      "error": "Expected tenkaku 11, got 6"
+    }
+  ]
+}
