@@ -3,7 +3,7 @@ import cors from 'cors';
 import SeimeiAnalysisService, { AnalysisRequest } from './src/services/seimei-analysis-service';
 
 const app = express();
-const PORT = process.env.PORT || 5003;
+const PORT = parseInt(process.env.PORT || '5003', 10);
 const HOST = process.env.HOST || '0.0.0.0';
 
 // サービスインスタンス

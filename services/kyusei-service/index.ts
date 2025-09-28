@@ -9,7 +9,7 @@ import Nattin from './src/bans/units/Nattin';
 import JikanEto from './src/bans/units/JikanEto';
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = parseInt(process.env.PORT || '5002', 10);
 const HOST = process.env.HOST || '0.0.0.0';
 
 // ミドルウェア
