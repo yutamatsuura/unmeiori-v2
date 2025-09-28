@@ -12,8 +12,8 @@ RUN npm ci --only=production
 # アプリケーションコードをコピー
 COPY . .
 
-# ポート5002を公開
-EXPOSE 5002
+# Cloud Runのポートを公開（環境変数PORTまたはデフォルト8080）
+EXPOSE 8080
 
 # 非rootユーザーで実行
 USER node
