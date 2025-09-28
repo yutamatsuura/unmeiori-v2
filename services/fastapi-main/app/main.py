@@ -18,7 +18,7 @@ app = FastAPI(
 
 # CORS設定
 allowed_origins = [
-    settings.cors_origin,
+    getattr(settings, 'cors_origin', 'http://localhost:3001'),
     "http://localhost:3001",  # 開発環境用
     "http://127.0.0.1:3001",  # 開発環境用
 ]
