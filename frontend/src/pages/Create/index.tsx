@@ -68,7 +68,7 @@ const CreatePage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     surname: '',
     givenName: '',
-    birthDate: '',
+    birthDate: '1980-01-01',
     gender: '',
     email: 'test@example.com'
   });
