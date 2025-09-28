@@ -6,12 +6,14 @@ from app.api import auth, kantei, template, pdf
 from app.core.database import engine
 from app.models import Base
 
-# テーブル作成（開発時の保険、本番では安全にスキップ）
-try:
-    Base.metadata.create_all(bind=engine)
-except Exception as e:
-    print(f"Warning: Could not create tables: {e}")
-    # Cloud Run環境では接続エラーでも続行
+# テーブル作成（開発時のみ、Cloud Runでは完全スキップ）
+import os
+if os.getenv("NODE_ENV") == "development":
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"Warning: Could not create tables in development: {e}")
+# Cloud Run環境では実行しない
 
 app = FastAPI(
     title=settings.app_name,
