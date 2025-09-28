@@ -6,8 +6,12 @@ from app.api import auth, kantei, template, pdf
 from app.core.database import engine
 from app.models import Base
 
-# テーブル作成（Alembicを使う場合は不要だが、開発時の保険）
-# Base.metadata.create_all(bind=engine)
+# テーブル作成（開発時の保険、本番では安全にスキップ）
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"Warning: Could not create tables: {e}")
+    # Cloud Run環境では接続エラーでも続行
 
 app = FastAPI(
     title=settings.app_name,
@@ -52,7 +56,17 @@ async def root():
 
 @app.get("/health")
 async def health():
-    """ヘルスチェックエンドポイント"""
+    """シンプルなヘルスチェックエンドポイント（Cloud Run対応）"""
+    return {
+        "status": "healthy",
+        "service": "fastapi-main",
+        "version": "1.0.0"
+    }
+
+
+@app.get("/health/detailed")
+async def health_detailed():
+    """詳細ヘルスチェックエンドポイント"""
     from sqlalchemy import text
     from app.core.database import get_db
 
