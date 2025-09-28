@@ -175,13 +175,13 @@ const PreviewPage: React.FC = () => {
   const [selectedFontSizes, setSelectedFontSizes] = useState<FontSizeSelection>(getDefaultFontSizeSelection());
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(loadCompanyInfo());
 
-  // 認証状態をチェック & ユーザーテーマを読み込み
+  // 認証状態をチェック & ユーザーテーマを読み込み（Phase 1.5では無効化）
   useEffect(() => {
-    const token = getAuthToken();
-    if (!token) {
-      navigate('/login', { replace: true });
-      return;
-    }
+    // const token = getAuthToken();
+    // if (!token) {
+    //   navigate('/login', { replace: true });
+    //   return;
+    // }
 
     // ユーザーのテーマ設定を取得
     const loadUserTheme = async () => {
@@ -213,13 +213,13 @@ const PreviewPage: React.FC = () => {
   useEffect(() => {
     const loadComment = async () => {
       if (id && id !== 'temp') {
-        const token = getAuthToken();
-        if (!token) return;
+        // const token = getAuthToken();
+        // if (!token) return;
 
         try {
           const response = await fetch(`http://localhost:5004/api/kantei/${id}`, {
             headers: {
-              'Authorization': `Bearer ${token}`
+              // 'Authorization': `Bearer ${token}`
             }
           });
           if (response.ok) {
@@ -324,12 +324,13 @@ const PreviewPage: React.FC = () => {
       return;
     }
 
-    const token = getAuthToken();
-    if (!token) {
-      setErrorMessage('認証が必要です。ログインしてください。');
-      navigate('/login', { replace: true });
-      return;
-    }
+    // Phase 1.5: 認証チェック無効化
+    // const token = getAuthToken();
+    // if (!token) {
+    //   setErrorMessage('認証が必要です。ログインしてください。');
+    //   navigate('/login', { replace: true });
+    //   return;
+    // }
 
     try {
       setIsUpdatingComment(true);
