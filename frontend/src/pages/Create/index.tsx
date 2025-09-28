@@ -192,18 +192,29 @@ const CreatePage: React.FC = () => {
       console.log('九星気学結果:', kyuseiResult);
 
       // 姓名判断計算（正しいフォーマット）
-      const seimeiData = {
+      const seimeiRequest = {
         sei: formData.surname,
         mei: formData.givenName
       };
-      const seimeiResult = await seimeiHandanAPI.calculate(seimeiData);
+      const seimeiResult = await seimeiHandanAPI.calculate(seimeiRequest);
       console.log('姓名判断結果:', seimeiResult);
 
-      // 結果統合
+      // 結果統合（姓名判断の実際のデータ構造に対応）
+      // 姓名判断APIは {success: true, data: {...}} を返すので、
+      // Previewページで期待される形式に変換
+      const seimeiData = seimeiResult.data || seimeiResult;
       const result = {
         id: Date.now(), // 仮のID
         kyusei_result: kyuseiResult,
-        seimei_result: seimeiResult,
+        seimei_result: {
+          total: seimeiData.kakusu?.soukaku,
+          heaven: seimeiData.kakusu?.tenkaku,
+          earth: seimeiData.kakusu?.chikaku,
+          personality: seimeiData.kakusu?.jinkaku,
+          original_response: {
+            data: seimeiData
+          }
+        },
         combined_result: {
           summary: '九星気学と姓名判断の結果が完了しました',
           overall_fortune: '運勢良好'
