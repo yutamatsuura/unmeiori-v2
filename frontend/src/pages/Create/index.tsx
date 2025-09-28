@@ -81,13 +81,13 @@ const CreatePage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  // 認証状態をチェック
-  useEffect(() => {
-    const token = getAuthToken();
-    if (!token) {
-      navigate('/login', { replace: true });
-    }
-  }, [navigate]);
+  // 認証状態をチェック（Phase 1.5では無効化）
+  // useEffect(() => {
+  //   const token = getAuthToken();
+  //   if (!token) {
+  //     navigate('/login', { replace: true });
+  //   }
+  // }, [navigate]);
 
   const handleLogout = async () => {
     await authAPI.logout();
