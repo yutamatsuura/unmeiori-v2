@@ -1,0 +1,340 @@
+/* 共通 */
+
+body
+{
+    background-color:white;
+}
+
+
+table
+{
+    border-collapse:collapse;
+}
+
+th
+{
+    border:1px black solid;    
+    background-color: #dcd6d2;
+}
+
+td
+{
+    border:1px black solid;   
+}
+
+/* 総評 */
+.souhyou
+{
+    margin-bottom:2em;
+    width:70%;
+}
+
+.souhyou td
+{
+    border:none;             
+}
+
+.souhyou .score
+{    
+    font-size:2rem;
+    width:3.5em;    
+    vertical-align: top;
+}
+
+
+.souhyou .score_max
+{
+    font-size:1rem;
+    padding-left:3em;    
+    margin-top:-1em;
+}
+
+.souhyou .message
+{
+    font-size:1rem;     
+}
+
+
+
+
+
+
+
+
+
+/* 文字の構成 */
+table.kousei
+{
+	font-size:1rem;
+}
+
+
+table.kousei th.none
+{
+    border:none;
+    background-color:initial;
+    width:5em;
+}
+
+table.kousei td
+{
+    text-align: center; 
+    width:3em;
+}
+
+td.kaku
+{
+    background-color:white;
+}
+
+td.not_kaku
+{
+    background-color:#f5f5f5;
+}
+
+table.kousei .ka
+{
+    background-color:#efffff;
+}
+
+table.kousei .kin
+{
+    background-color:#ffffef;
+}
+
+table.kousei .moku
+{
+    background-color:#effff7;
+}
+
+table.kousei .sui
+{
+    background-color:#efffff;
+}    
+
+table.kousei .ka
+{
+    background-color: #ffefff;
+}
+
+table.kousei .do
+{
+    background-color:#fff7ef;
+}    
+
+table.kousei .you
+{
+    background-color: white;
+}
+
+table.kousei .in
+{
+    background-color: lightgray;
+}
+
+
+
+/* 鑑定の結果 */
+table.kantei
+{
+    width:70%;
+    margin-bottom:1em;
+    font-size:0.9rem;
+}
+
+
+table.kantei th
+{
+    background-color: #dcd6d2;
+}
+
+
+table.kantei>tr
+{
+    height:100%;
+    vertical-align: top;
+}
+
+
+table.kantei .target
+{
+    width:8em;
+    padding-left:1em;
+    margin:auto;
+}
+
+table.kantei .comment
+{   
+    padding-left:1em;    
+    padding-right:1em;     
+}
+
+table.kantei .comment .title
+{
+    font-weight:bold;
+}
+
+table.kantei .comment .genten
+{
+    color:red;
+}
+
+/* 共通 */
+div.admin fieldset
+{
+    position:relative;  
+    margin-bottom:1em;
+}
+
+div.admin fieldset:nth-child(3),
+div.admin fieldset:nth-child(4)
+{
+    min-height:5em;
+}
+
+
+
+.ngword
+{
+    display:inline-block;
+    vertical-align:top;   
+    margin-right:5em; 
+}
+
+.ngwordArea
+{
+    width:100%;
+    height:5em;
+}
+    
+h2
+{
+    padding-bottom:3em;
+    position: relative;
+    background:linear-gradient(#86a7ca, white);
+    padding-left:3em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+    border-radius: 0 10px 10px 0;
+}
+
+h3
+{
+    width:20em;    
+    margin-top:3em;
+    margin-bottom:2em;
+    position: relative;
+    background:linear-gradient(#86a7ca, white);
+    padding-left:3em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+    border-radius: 0 10px 10px 0;    
+}
+
+h4
+{    
+    padding-left:1em;
+    border-left: solid 0.5em #7db4e6;
+    padding-bottom:0em;
+    margin-bottom:1em;
+}
+
+.admin_message
+{
+    width:50%;
+    height:8em;    
+}
+
+
+a.admin_link
+{
+    font-size:0.7rem;  
+    float: right;
+}
+
+table.admin th
+{
+    border:1px black solid;    
+    background-color: #dcd6d2;
+}
+
+table.admin tr:hover
+{
+    background-color:lightgray;
+}
+
+*
+{
+    font-family:  游ゴシック,メイリオ;
+}
+
+ul.number
+{
+   padding-left:3em;
+}
+
+ul.number li
+{
+    list-style-type: decimal    
+}
+
+#direction
+{
+    font-size:0.7rem;
+}
+
+#after_kantei
+{
+    font-size:0.8rem;    
+    padding-top:8em;
+}
+
+
+
+
+@media only screen and (max-device-width:480px) {
+    html
+    {
+        font-size:30px;    
+    }
+
+    h2
+    {
+        font-size:1.5rem;
+    }
+
+    h3
+    {
+        font-size:1.3rem;
+    }
+
+    .souhyou
+    {
+        width:100%;
+    }
+
+    table.kantei
+    {
+        width:100%;
+    }
+
+    input
+    {
+        font-size:1rem;
+        width:7em;
+    }
+
+
+    table.kantei .comment
+    {
+        padding-left:0px;
+        padding-right:0px;
+    }
+
+    table.kantei .target
+    {
+        padding-left:0px;
+        padding-right:0px;
+    }
+}
+

@@ -1,0 +1,461 @@
+/* 共通 */
+
+body
+{
+    background-color:white;
+}
+
+div.arrow
+{
+    background:no-repeat center/100% url("../img/arrow.png");
+    width:48px;
+    height:48px;
+    border:none;
+    padding:0px;
+    margin:0px;    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+     -ms-user-select: none;
+         user-select: none;
+}
+
+
+
+
+div.arrow.left
+{
+    transform: scale(-1, 1);
+}    
+
+div.arrow.right:hover
+{
+    filter: invert(100%);
+}
+
+div.arrow.left:hover
+{
+    filter: invert(100%);
+}
+
+/* block系 */
+.block {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+
+.block .arrow.left
+{
+    position: absolute;
+    left:1em;
+    top:3em;
+}
+
+.block .arrow.right
+{
+    position: absolute;
+    left:calc(95% - 3em);
+    top:3em;
+}
+
+
+    
+h2
+{
+    position: relative;
+    background:linear-gradient(#86a7ca, white);
+    padding-left:3em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+    border-radius: 0 10px 10px 0;
+}
+
+h3
+{
+    width:10em;
+    position: relative;
+    background:linear-gradient(#86a7ca, white);
+    padding-left:3em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+    border-radius: 0 10px 10px 0;
+}
+
+h4
+{
+    padding-left:1em;
+    border-left: solid 0.5em #7db4e6;
+    padding-bottom:0em;
+    margin-bottom:1em;
+}
+
+
+th,td
+{
+    font-size:1rem;
+}
+
+.birthday_detail
+{
+    border:1.5px groove black;
+    border-collapse: collapse;
+}
+
+.birthday_detail th
+{
+    width:8em;
+    border:1.5px groove black;
+}
+
+.birthday_detail td
+{
+    width:20.5em;
+    border:1.5px groove black;
+}
+
+
+
+.block>div
+{
+    position: relative;    
+}
+
+.none_kirikae
+{
+    border:1px solid #333333;
+    margin-right:5px;
+    margin-bottom:5px;
+    border-radius: 10px 10px 20px 20px;
+}
+
+
+
+.kirikae
+{  
+    border:1px solid #333333;
+    margin-right:5px;
+    margin-bottom:5px;
+    border-radius: 10px 10px 20px 20px;
+    background-color:lightgray;
+}
+
+
+
+.ban_title
+{
+    background-color:#86a7ca;
+    margin-top:0px; 
+    padding-top:0.5em;      
+    padding-bottom:0px;    
+    margin-bottom:0px;    
+    margin:0.25em;
+    font-size:1rem;
+    position:relative;
+    width:calc(100% - 0.5em);
+    height:2.5em;
+}
+
+
+.ban_husen{
+    background: #fff2ab;
+    position: relative;
+    box-shadow: 0px 0px 0px 5px #fff2ab;
+    margin-left: 5px;
+    margin-right:10px;
+    padding-left:15px;    
+    width:2.5em;
+    display:inline-block;
+    vertical-align:top;   
+    padding-bottom:5px;    
+    margin-bottom:0px;    
+}
+
+.ban_husen::after{
+    position: absolute;
+    content: '';
+    left: -5px;
+    top: -5px;
+    border-width: 0 0 15px 15px;
+    border-style: solid;
+    border-color:#fff2ab #86a7ca #fff2ab;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    padding-top:0px;      
+    padding-bottom:0px;    
+    margin-bottom:0px;    
+}
+
+.ban_date
+{
+    display:inline-block;
+    padding-bottom:0px;
+    margin-bottom:0px;
+}
+
+
+.ban_date_current
+{
+    position: relative;
+    top:-0.4em;
+    padding:0px;      
+    margin:0px;    
+}
+
+
+.ban_date_range
+{
+    font-size:0.7rem;  
+    position: relative;
+    top:-0.5em;     
+    padding:0px;      
+    margin:0px;    
+}
+
+
+/* 本命命での共通 */
+table.birthday
+{
+    border-collapse: collapse;
+    border:1.5px solid black;
+    margin-bottom:10px;
+}
+
+table.birthday th
+{
+    width:8em;
+    border:1.5px groove black;
+}
+
+table.birthday td
+{
+    width:20.5em;
+    border:1.5px solid black;
+}
+
+
+/* list 系 */
+
+.list_control
+{
+    position: relative; 
+}
+
+.list_control .arrow.left
+{
+    position: fixed;
+    left:2em;
+    bottom:1em;
+    z-index: 1;
+}
+
+.list_control .arrow.right
+{
+    position: fixed;
+    right:2em;
+    bottom:1em;
+    z-index: 1;
+}
+
+div.list_parent
+{
+    height:1.5em;    
+}
+
+a.list_left
+{
+    position: relative;
+    left:1em;
+    top:-1em;    
+}
+
+a.list_right
+{
+    position: relative;
+    left:calc(100% - 5.5em);
+    top:-3em;
+}
+
+span.kipou
+{
+    color:red
+}
+
+
+span.kyou
+{
+    color:black
+}
+
+
+
+
+fieldset
+{
+    margin-bottom:2em;
+}
+
+
+svg
+{
+    margin-top:0px;
+}
+
+
+path.border,line.border
+{
+    stroke-width:1.0;
+    stroke:black;
+    fill:none;
+    pointer-events: none;
+}
+
+path.kipou_strong
+{
+    stroke:none;    
+    fill:#FFD6EA;
+}
+
+path.kipou_weak
+{
+    stroke:none;    
+    fill:MistyRose;
+}
+
+
+
+path.kyou_strong
+{
+    stroke:none;    
+    fill:#C0C0C0;
+}
+
+
+path.kyou_weak
+{
+    stroke:none;    
+    fill:lightgray;
+}
+
+path.normal
+{
+    stroke:none;    
+    fill:none;    
+}
+
+path.moku
+{
+    fill:white;
+}
+
+path.ka
+{
+    fill:white;    
+}
+
+path.do
+{
+    fill:white;
+}
+
+path.kin
+{
+    fill:white;
+}
+
+path.sui
+{
+    fill:white;
+}
+
+
+text.houi
+{
+    font-size:0.6rem;
+}
+
+text.kipou
+{
+    font-size:0.7rem;
+}
+
+text.ban
+{
+    font-size:0.8rem;
+}
+
+
+
+
+#currentday_cal
+{
+    display:none;    
+}
+
+th
+{
+    background-color:#dcd6d2;
+}
+
+
+
+
+.rosen
+{
+    position: relative;
+    left:-1.7em;
+    top:0.2em;
+    width:1.75em;
+    height:1.75em;
+    padding:0px;
+    margin-top:-0.375em;
+    margin-bottom:-0.375em;
+}
+
+
+footer
+{
+    padding-top:3em;
+    padding-bottom:3em;
+}
+
+
+@media only screen and (max-device-width:480px) {
+    html
+    {
+        font-size:30px;    
+    }
+
+    .block {
+        flex-direction: column;
+    }
+
+    .block>div
+    {
+        width:100%;
+    }
+      
+
+    div.arrow
+    {
+        width:96px;    
+        height:96px;    
+    }
+
+    text.houi
+    {
+        font-size:1rem;
+    }
+
+    text.kipou
+    {
+        font-size:1.2rem;
+    }
+
+    text.ban
+    {
+        font-size:1.2rem;
+    }
+}
+

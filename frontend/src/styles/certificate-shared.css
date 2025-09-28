@@ -1,0 +1,898 @@
+/* 鑑定書共通スタイル - プレビュー・印刷統一用 */
+
+/* CSS変数定義 */
+:root {
+  /* 鑑定書専用カラーパレット */
+  --certificate-gradient: linear-gradient(45deg, #1976d2, #42a5f5);
+  --certificate-primary: #1976d2;
+  --certificate-secondary: #dc004e;
+  --certificate-info: #0288d1;
+  --certificate-success: #2e7d32;
+  --certificate-text-gray: #757575;
+  --certificate-text-dark: #424242;
+  --certificate-border: #e0e0e0;
+
+  /* フォント設定 */
+  --certificate-font-title: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "MS PMincho", serif;
+  --certificate-font-heading: "Yu Gothic", "YuGothic", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
+  --certificate-font-body: "Yu Gothic", "YuGothic", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
+
+  /* フォントサイズ倍率設定 */
+  --certificate-font-size-title-scale: 1;
+  --certificate-font-size-heading-scale: 1;
+  --certificate-font-size-body-scale: 1;
+
+  /* 間隔 */
+  --certificate-spacing-xs: 8px;
+  --certificate-spacing-sm: 16px;
+  --certificate-spacing-md: 24px;
+  --certificate-spacing-lg: 32px;
+  --certificate-spacing-xl: 40px;
+}
+
+/* 共通見出しスタイル - メインカラー適用 */
+.certificate-title {
+  color: var(--certificate-primary) !important;
+  font-weight: bold !important;
+}
+
+/* 印刷ヘッダースタイル */
+.print-header {
+  text-align: center;
+  margin-bottom: var(--certificate-spacing-md);
+  padding-bottom: var(--certificate-spacing-sm);
+  border-bottom: 1px solid var(--certificate-primary);
+}
+
+.certificate-main-title {
+  color: var(--certificate-primary) !important;
+  font-family: var(--certificate-font-title) !important;
+  font-weight: bold !important;
+  text-align: center;
+  margin-bottom: var(--certificate-spacing-xs) !important;
+  font-size: calc(2rem * var(--certificate-font-size-title-scale)) !important;
+  line-height: 1.2 !important;
+  margin-top: 0 !important;
+}
+
+.certificate-subtitle {
+  text-align: center;
+  color: var(--certificate-text-gray) !important;
+  font-size: calc(1rem * var(--certificate-font-size-heading-scale)) !important;
+  margin-bottom: var(--certificate-spacing-sm) !important;
+}
+
+.certificate-section-title {
+  color: var(--certificate-primary) !important;
+  font-family: var(--certificate-font-heading) !important;
+  font-weight: bold !important;
+  font-size: calc(1.2rem * var(--certificate-font-size-heading-scale)) !important;
+  padding-bottom: var(--certificate-spacing-xs);
+  margin-bottom: var(--certificate-spacing-sm);
+  border-bottom: 2px solid var(--certificate-primary);
+}
+
+/* セクションスタイル */
+.certificate-section {
+  margin-bottom: var(--certificate-spacing-md);
+}
+
+/* PrintPreviewMode専用の余白調整 */
+.print-preview-container .certificate-section {
+  margin-top: var(--certificate-spacing-xs) !important;
+}
+
+.print-preview-container .certificate-hoiban-section {
+  margin-top: var(--certificate-spacing-xs) !important;
+}
+
+/* PrintPreviewMode内の見出しの余白調整 */
+.print-preview-container .certificate-section-title {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.certificate-content {
+  padding: var(--certificate-spacing-xl);
+  background: white;
+  border-radius: 8px;
+  font-family: var(--certificate-font-body) !important;
+  font-size: calc(1rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+/* 情報表示グリッド */
+.certificate-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--certificate-spacing-sm);
+  margin-bottom: var(--certificate-spacing-md);
+}
+
+.certificate-info-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.certificate-info-label {
+  font-weight: bold;
+  min-width: 80px;
+}
+
+/* 結果表示スタイル */
+.certificate-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--certificate-spacing-sm);
+  margin-bottom: var(--certificate-spacing-md);
+}
+
+.certificate-result-item {
+  text-align: center;
+  padding: var(--certificate-spacing-sm);
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--certificate-border);
+}
+
+.certificate-result-item .result-label {
+  font-weight: 500;
+  color: var(--certificate-text-gray);
+  margin-bottom: var(--certificate-spacing-xs);
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-result-item .result-value {
+  font-weight: bold;
+  color: var(--certificate-text-dark);
+  font-size: calc(1.125rem * var(--certificate-font-size-body-scale));
+}
+
+/* 結果表示グリッド */
+.certificate-result-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--certificate-spacing-sm);
+  margin-bottom: var(--certificate-spacing-md);
+}
+
+.certificate-result-item {
+  text-align: center;
+  padding: var(--certificate-spacing-sm);
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--certificate-border);
+}
+
+.certificate-result-item .result-label {
+  font-weight: 500;
+  color: var(--certificate-text-gray);
+  margin-bottom: var(--certificate-spacing-xs);
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-result-item .result-value {
+  font-weight: bold;
+  color: var(--certificate-text-dark);
+  font-size: calc(1.125rem * var(--certificate-font-size-body-scale));
+}
+
+/* 区切り線 - サブカラー適用 */
+.certificate-divider {
+  margin: var(--certificate-spacing-md) 0;
+  border: none;
+  border-top: 1px solid var(--certificate-secondary);
+}
+
+/* 色指定クラス */
+.certificate-color-primary {
+  color: var(--certificate-primary) !important;
+}
+
+.certificate-color-secondary {
+  color: var(--certificate-secondary) !important;
+}
+
+.certificate-color-info {
+  color: var(--certificate-info) !important;
+}
+
+.certificate-color-success {
+  color: var(--certificate-success) !important;
+}
+
+.certificate-color-gray {
+  color: var(--certificate-text-gray) !important;
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+.certificate-color-dark {
+  color: var(--certificate-text-dark) !important;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .certificate-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-content {
+    padding: var(--certificate-spacing-md);
+  }
+}
+
+/* 印刷時の最適化 */
+@media print {
+  /* 基本設定 */
+  @page {
+    size: A4;
+    margin: 12mm 10mm;
+    padding: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+  }
+
+  html, body {
+    font-family: 'Yu Gothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif !important;
+    line-height: 1.3 !important;
+    color: #000 !important;
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    overflow-x: visible !important;
+  }
+
+  /* 印刷コンテナ全体の調整 */
+  .print-preview-container,
+  .preview-page {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    background: transparent !important;
+  }
+
+  .print-container,
+  .certificate-content {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 8mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #fff !important;
+  }
+
+  /* 不要な要素を非表示 */
+  .no-print,
+  .MuiAppBar-root,
+  .MuiButton-root,
+  .MuiFab-root,
+  .MuiSnackbar-root,
+  .MuiDialog-root,
+  nav,
+  header,
+  footer,
+  .action-panel,
+  .control-panel {
+    display: none !important;
+  }
+
+  /* 印刷時の見出し色設定 */
+  .certificate-title,
+  .certificate-main-title,
+  .certificate-section-title {
+    background: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: var(--certificate-primary) !important;
+  }
+
+  .certificate-details-section-title,
+  .certificate-hoiban-title,
+  .certificate-detail-title {
+    background: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: var(--certificate-secondary) !important;
+  }
+
+  /* 結果グリッド */
+  .certificate-result-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 3mm !important;
+    margin-bottom: 4mm !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .certificate-result-item {
+    padding: 2mm !important;
+    border-radius: 2mm !important;
+    border: 1px solid #ddd !important;
+    background: #f9f9f9 !important;
+    break-inside: avoid !important;
+  }
+
+  .certificate-result-item .result-label {
+    font-size: calc(9pt * var(--certificate-font-size-body-scale)) !important;
+    margin-bottom: 1mm !important;
+    color: #666 !important;
+  }
+
+  .certificate-result-item .result-value {
+    font-size: calc(11pt * var(--certificate-font-size-body-scale)) !important;
+    font-weight: bold !important;
+    color: #333 !important;
+  }
+
+  /* 情報グリッド */
+  .certificate-info-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2mm !important;
+    margin-bottom: 4mm !important;
+    width: 100% !important;
+  }
+
+  .certificate-info-field {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 2mm !important;
+    padding: 1mm 0 !important;
+    border-bottom: 1px solid #eee !important;
+    font-size: 10pt !important;
+  }
+
+  .certificate-info-label {
+    font-weight: bold !important;
+    color: #666 !important;
+  }
+
+  .certificate-info-value {
+    color: #333 !important;
+  }
+
+  /* 文字サイズ調整 */
+  h1 { font-size: calc(20pt * var(--certificate-font-size-title-scale)) !important; }
+  h2 { font-size: calc(16pt * var(--certificate-font-size-heading-scale)) !important; }
+  h3 { font-size: calc(14pt * var(--certificate-font-size-heading-scale)) !important; }
+  h4 { font-size: calc(12pt * var(--certificate-font-size-heading-scale)) !important; }
+  h5 { font-size: calc(11pt * var(--certificate-font-size-body-scale)) !important; }
+  h6 { font-size: calc(10pt * var(--certificate-font-size-body-scale)) !important; }
+
+  /* コンテナ */
+  .certificate-content {
+    padding: var(--certificate-spacing-md) !important;
+  }
+
+  /* 改ページ制御 */
+  .certificate-section {
+    page-break-inside: avoid;
+  }
+
+  /* 詳細解説セクション */
+  .certificate-detail-section {
+    margin-bottom: 3mm !important;
+    page-break-inside: avoid;
+  }
+
+  .certificate-detail-header {
+    margin-bottom: 2mm !important;
+  }
+
+  .certificate-detail-title {
+    font-size: calc(8pt * var(--certificate-font-size-body-scale)) !important;
+  }
+
+  .certificate-detail-badge {
+    font-size: calc(6pt * var(--certificate-font-size-body-scale)) !important;
+    padding: 1mm 2mm !important;
+  }
+
+  .certificate-detail-card {
+    padding: 2mm !important;
+    margin-bottom: 1mm !important;
+  }
+
+  .certificate-detail-card-title {
+    font-size: 10pt !important;
+  }
+
+  /* 方位盤セクション */
+  .certificate-hoiban-section {
+    margin-bottom: 4mm !important;
+  }
+
+  .certificate-hoiban-title {
+    font-size: calc(9pt * var(--certificate-font-size-body-scale)) !important;
+    margin-bottom: 2mm !important;
+  }
+
+  /* 詳細情報カード */
+  .certificate-details-card {
+    width: 100% !important;
+    margin: -35mm 0 2mm 0 !important;
+    padding: 3mm !important;
+    border: 1px solid #ddd !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+  }
+
+  .certificate-details-main-title {
+    font-size: calc(14pt * var(--certificate-font-size-title-scale)) !important;
+    margin-top: 0 !important;
+    margin-bottom: 2mm !important;
+    color: #333 !important;
+  }
+
+  .certificate-details-section-title {
+    font-size: calc(12pt * var(--certificate-font-size-heading-scale)) !important;
+    margin-bottom: 2mm !important;
+    color: #333 !important;
+    border-bottom: 1px solid #ddd !important;
+    padding-bottom: 1mm !important;
+  }
+
+  .certificate-details-info-row {
+    padding: 1mm 0 !important;
+    border-bottom: 1px solid #eee !important;
+    font-size: calc(10pt * var(--certificate-font-size-body-scale)) !important;
+  }
+
+  /* テーブル */
+  .certificate-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 2mm 0 !important;
+    font-size: calc(9pt * var(--certificate-font-size-body-scale)) !important;
+    page-break-inside: avoid !important;
+  }
+
+  .certificate-table th,
+  .certificate-table td {
+    padding: 1mm 2mm !important;
+    border: 1px solid #ddd !important;
+    font-size: calc(9pt * var(--certificate-font-size-body-scale)) !important;
+  }
+
+  .certificate-table th {
+    background: #f5f5f5 !important;
+    font-weight: bold !important;
+  }
+
+  /* チップ・バッジ */
+  .certificate-chip {
+    font-size: calc(8pt * var(--certificate-font-size-body-scale)) !important;
+    padding: 0.5mm 1mm !important;
+    border-radius: 1mm !important;
+    display: inline-block !important;
+    margin: 0 1mm 1mm 0 !important;
+  }
+
+  /* 方位盤セクション */
+  .certificate-hoiban-section {
+    page-break-inside: avoid !important;
+    margin-bottom: 4mm !important;
+  }
+
+  .certificate-hoiban-title {
+    font-size: calc(12pt * var(--certificate-font-size-heading-scale)) !important;
+    color: #333 !important;
+    margin-bottom: 2mm !important;
+  }
+
+  /* 余白調整 */
+  .certificate-spacing-xs { --certificate-spacing-xs: 1mm; }
+  .certificate-spacing-sm { --certificate-spacing-sm: 2mm; }
+  .certificate-spacing-md { --certificate-spacing-md: 3mm; }
+  .certificate-spacing-lg { --certificate-spacing-lg: 4mm; }
+  .certificate-spacing-xl { --certificate-spacing-xl: 5mm; }
+
+  /* Material-UI要素の強制非表示 */
+  .MuiCard-root,
+  .MuiCardContent-root {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+  }
+
+  /* 印刷時の横幅確保 */
+  .content-layout {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .preview-card {
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* アクセシビリティ対応 */
+
+/* スクリーンリーダー用のテキスト */
+.certificate-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* フォーカス時の表示 */
+.certificate-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 4px 8px;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border: 2px solid var(--certificate-primary);
+  background: #fff;
+  color: var(--certificate-primary);
+}
+
+/* 高コントラストモード対応 */
+@media (prefers-contrast: high) {
+  .certificate-title,
+  .certificate-main-title,
+  .certificate-section-title {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: #000 !important;
+    border-bottom: 2px solid #000;
+  }
+
+  .certificate-result-item {
+    border: 2px solid #000 !important;
+  }
+
+  .certificate-result-item .result-value {
+    color: #000 !important;
+  }
+}
+
+/* 動作を減らす設定 */
+@media (prefers-reduced-motion: reduce) {
+  .certificate-gradient {
+    background: var(--certificate-primary) !important;
+  }
+}
+
+/* キーボードナビゲーション */
+.certificate-result-item:focus-within {
+  outline: 2px solid var(--certificate-primary);
+  outline-offset: 2px;
+}
+
+/* カラーコントラスト改善 */
+.certificate-result-item .result-label {
+  color: #424242; /* WCAG AA準拠 */
+}
+
+.certificate-result-item .result-value {
+  font-weight: 700; /* 読みやすさ向上 */
+}
+
+
+/* 詳細解説セクション */
+.certificate-detail-section {
+  margin-bottom: var(--certificate-spacing-md);
+  page-break-inside: avoid;
+}
+
+.certificate-detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--certificate-spacing-xs);
+  margin-bottom: var(--certificate-spacing-sm);
+}
+
+.certificate-detail-title {
+  font-weight: bold;
+  color: var(--certificate-secondary);
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-detail-badge {
+  background-color: #e3f2fd;
+  color: var(--certificate-primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: calc(0.75rem * var(--certificate-font-size-body-scale));
+  font-weight: bold;
+}
+
+.certificate-detail-badge.secondary {
+  background-color: #fce4ec;
+  color: var(--certificate-secondary);
+}
+
+.certificate-detail-badge.success {
+  background-color: #e8f5e8;
+  color: var(--certificate-success);
+}
+
+.certificate-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--certificate-spacing-sm);
+  font-size: calc(0.9rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+/* 詳細セクション内の全てのテキスト要素にフォントサイズを適用 */
+.certificate-detail-content div,
+.certificate-detail-content span,
+.certificate-detail-content p {
+  font-size: calc(0.9rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+/* 詳細セクション内の小さいテキストにもスケールを適用 */
+.certificate-detail-content [style*="fontSize: '0.875rem'"],
+.certificate-detail-content [style*="font-size: 0.875rem"] {
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+/* Material-UIのTypographyコンポーネントにフォントサイズを適用（証明書内容のみ） */
+.certificate-content .MuiAccordionDetails-root .MuiTypography-body1 {
+  font-size: calc(0.9rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+.certificate-content .MuiAccordionDetails-root .MuiTypography-body2 {
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+.certificate-content .MuiAccordionDetails-root .MuiTypography-subtitle2 {
+  font-size: calc(0.875rem * var(--certificate-font-size-heading-scale)) !important;
+}
+
+/* アコーディオン内の全てのTypographyに適用（証明書内容のみ） */
+.certificate-content .MuiAccordionDetails-root .MuiTypography-root {
+  font-size: calc(0.9rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+/* Previewページのアコーディオン詳細セクション全体に適用（証明書内容のみ） */
+.certificate-content .MuiAccordionDetails-root {
+  font-size: calc(0.9rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+/* Previewページ内のインラインスタイル上書き（証明書内容のみ） */
+.certificate-content .MuiAccordionDetails-root [style*="marginBottom"] {
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale)) !important;
+}
+
+.certificate-detail-card {
+  border: 1px solid var(--certificate-border);
+  border-radius: 8px;
+  padding: var(--certificate-spacing-sm);
+  background: #fff;
+}
+
+.certificate-detail-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--certificate-spacing-xs);
+}
+
+.certificate-detail-card-title {
+  font-weight: bold;
+  font-size: calc(1.125rem * var(--certificate-font-size-body-scale));
+  color: var(--certificate-text-dark);
+}
+
+.certificate-detail-badges {
+  display: flex;
+  gap: 4px;
+}
+
+/* 方位盤セクション */
+.certificate-hoiban-section {
+  margin-bottom: var(--certificate-spacing-lg);
+  page-break-inside: avoid;
+}
+
+.certificate-hoiban-title {
+  text-align: center;
+  font-weight: bold;
+  color: var(--certificate-secondary);
+  margin-bottom: var(--certificate-spacing-sm);
+  font-size: calc(1rem * var(--certificate-font-size-heading-scale));
+}
+
+
+/* 詳細情報カードスタイル */
+.certificate-details-card {
+  background: white;
+  border: 1px solid var(--certificate-border);
+  border-radius: 8px;
+  padding: var(--certificate-spacing-lg);
+  margin-bottom: var(--certificate-spacing-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.certificate-details-main-title {
+  color: var(--certificate-primary) !important;
+  font-weight: bold !important;
+  font-size: calc(1.25rem * var(--certificate-font-size-title-scale));
+  margin-bottom: var(--certificate-spacing-md) !important;
+  margin-top: var(--certificate-spacing-xs) !important;
+  text-align: center;
+}
+
+.certificate-details-section-title {
+  color: var(--certificate-secondary) !important;
+  font-weight: bold !important;
+  font-size: calc(1rem * var(--certificate-font-size-heading-scale));
+  margin-bottom: var(--certificate-spacing-sm) !important;
+  padding-bottom: var(--certificate-spacing-xs);
+  border-bottom: 2px solid var(--certificate-secondary);
+}
+
+.certificate-details-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--certificate-spacing-xs) 0;
+  border-bottom: 1px solid var(--certificate-border);
+}
+
+.certificate-details-info-row:last-child {
+  border-bottom: none;
+}
+
+.certificate-details-info-label {
+  color: var(--certificate-text-gray) !important;
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-details-info-value {
+  font-weight: 500;
+  color: var(--certificate-text-dark);
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-details-info-value.primary {
+  color: var(--certificate-text-dark) !important;
+}
+
+/* チップ（バッジ）スタイル */
+.certificate-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: calc(0.75rem * var(--certificate-font-size-body-scale));
+  font-weight: 500;
+  margin: 2px;
+}
+
+.certificate-chip.primary {
+  background-color: var(--certificate-primary);
+  color: white;
+}
+
+.certificate-chip.secondary {
+  background-color: transparent;
+  color: var(--certificate-secondary);
+  border: 1px solid var(--certificate-secondary);
+}
+
+.certificate-chip.error {
+  background-color: transparent;
+  color: var(--certificate-secondary);
+  border: 1px solid var(--certificate-secondary);
+}
+
+.certificate-chip-container {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: var(--certificate-spacing-xs);
+}
+
+/* テーブルスタイル */
+.certificate-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--certificate-spacing-sm);
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.certificate-table th,
+.certificate-table td {
+  padding: var(--certificate-spacing-xs) var(--certificate-spacing-sm);
+  text-align: left;
+  border-bottom: 1px solid var(--certificate-border);
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: var(--certificate-text-dark);
+  text-align: center;
+}
+
+.certificate-table td {
+  text-align: center;
+}
+
+.certificate-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.certificate-table tr:hover {
+  background-color: rgba(25, 118, 210, 0.04);
+}
+
+/* 注意書きスタイル */
+.certificate-alert {
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 8px;
+  padding: var(--certificate-spacing-sm);
+  margin-top: var(--certificate-spacing-md);
+  color: var(--certificate-info);
+  font-size: calc(0.875rem * var(--certificate-font-size-body-scale));
+}
+
+.certificate-alert::before {
+  content: "ℹ️ ";
+  margin-right: var(--certificate-spacing-xs);
+}
+
+/* 事業所・鑑定士情報のスタイル */
+.certificate-company-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(52, 73, 94, 0.1), rgba(127, 140, 141, 0.05));
+  border-left: 4px solid var(--certificate-primary);
+  border-radius: 4px;
+  font-family: var(--certificate-font-body);
+}
+
+.certificate-company-name {
+  font-size: calc(1.1rem * var(--certificate-font-size-body-scale));
+  font-weight: bold;
+  color: var(--certificate-primary);
+  font-family: var(--certificate-font-body);
+}
+
+.certificate-appraiser-name {
+  font-size: calc(0.95rem * var(--certificate-font-size-body-scale));
+  font-weight: bold;
+  color: var(--certificate-secondary);
+  font-family: var(--certificate-font-body);
+}
+

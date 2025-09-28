@@ -1,0 +1,115 @@
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
+import uvicorn
+import os
+from jose import jwt, JWTError
+import datetime
+from typing import Optional
+from dotenv import load_dotenv
+
+# 環境変数を読み込み
+load_dotenv(".env.local")
+load_dotenv()
+
+app = FastAPI(
+    title="FastAPI Main Service",
+    description="メインマイクロサービス",
+    version="1.0.0"
+)
+
+# CORS設定
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 環境変数
+JWT_SECRET = os.getenv("JWT_SECRET_KEY", "your-secret-key-here-change-in-production")
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRE_MINUTES = 1440
+
+# セキュリティ
+security = HTTPBearer()
+
+# データモデル
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user_id: int
+    subscription_status: str
+
+# テストユーザーデータ（開発用）
+TEST_USERS = {
+    "test@example.com": {
+        "password": "testpass123",
+        "user_id": 1,
+        "subscription_status": "active"
+    }
+}
+
+def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=JWT_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return encoded_jwt
+
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Could not validate credentials")
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World from FastAPI Main Service", "service": "fastapi-main", "port": 5004}
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "fastapi-main"}
+
+@app.post("/api/auth/login", response_model=LoginResponse)
+async def login(request: LoginRequest):
+    """ログイン認証エンドポイント"""
+    user_data = TEST_USERS.get(request.email)
+
+    if not user_data or user_data["password"] != request.password:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    # JWTトークン生成
+    access_token = create_access_token(
+        data={"sub": request.email, "user_id": user_data["user_id"]}
+    )
+
+    return LoginResponse(
+        access_token=access_token,
+        token_type="bearer",
+        user_id=user_data["user_id"],
+        subscription_status=user_data["subscription_status"]
+    )
+
+@app.get("/api/auth/me")
+async def get_current_user(token_payload=Depends(verify_token)):
+    """現在のユーザー情報取得"""
+    return {
+        "email": token_payload.get("sub"),
+        "user_id": token_payload.get("user_id"),
+        "subscription_status": "active"
+    }
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 5004))
+    uvicorn.run(app, host="0.0.0.0", port=port)

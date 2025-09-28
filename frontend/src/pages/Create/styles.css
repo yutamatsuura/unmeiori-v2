@@ -1,0 +1,183 @@
+.create-page {
+  min-height: 100vh;
+  width: 100vw;
+  max-width: none;
+  background-color: #f8f9fa;
+  font-family: 'Noto Sans JP', 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%) !important;
+  box-shadow: 0 2px 8px rgba(52, 73, 94, 0.1);
+}
+
+.header-title {
+  font-weight: 700 !important;
+  letter-spacing: -0.5px;
+  margin-right: 16px !important;
+}
+
+.header-subtitle {
+  font-weight: 400 !important;
+  opacity: 0.9;
+}
+
+.main-container {
+  padding: 32px 24px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.page-header {
+  text-align: center;
+  margin-top: 48px;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+.page-description {
+  color: #7f8c8d !important;
+}
+
+.content-layout {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  max-width: none;
+  width: 100%;
+}
+
+.form-section,
+.preview-section {
+  height: fit-content;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #34495e;
+}
+
+.section-title {
+  color: #34495e !important;
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #16a085 0%, #138d75 100%) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  margin-top: 16px !important;
+  transition: all 0.3s ease !important;
+}
+
+.generate-btn:hover {
+  background: linear-gradient(135deg, #138d75 0%, #117a65 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3) !important;
+}
+
+.generate-btn:disabled {
+  background: #bdc3c7 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.result-grid > * {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 968px) {
+  .content-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-container {
+    padding: 16px !important;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* カスタムMUIオーバーライド */
+.MuiTextField-root .MuiOutlinedInput-root {
+  transition: all 0.3s ease;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #16a085;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #16a085;
+  border-width: 2px;
+}
+
+.MuiFormLabel-root.Mui-focused {
+  color: #16a085 !important;
+}
+
+.MuiSelect-root {
+  transition: all 0.3s ease;
+}
+
+.MuiCard-root {
+  box-shadow: 0 2px 8px rgba(52, 73, 94, 0.1) !important;
+  border-radius: 12px !important;
+}
+
+.MuiCardContent-root {
+  padding: 24px !important;
+}

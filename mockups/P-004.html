@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鑑定履歴管理 - sindankantei</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", "Noto Serif JP", serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            padding: 24px 0;
+            box-shadow: 0 2px 12px rgba(52, 73, 94, 0.15);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #16a085;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-item {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: #16a085;
+        }
+
+        .nav-item.active {
+            color: #16a085;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #16a085;
+            border-radius: 1px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #34495e;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+
+        .history-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .history-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #34495e 0%, #16a085 100%);
+        }
+
+        .card-header {
+            padding: 32px;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #34495e;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .total-count {
+            font-size: 14px;
+            color: #7f8c8d;
+            background: #ecf0f1;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 500;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .table-header th {
+            padding: 20px 24px;
+            text-align: left;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .table-row {
+            border-bottom: 1px solid #ecf0f1;
+            transition: background-color 0.2s ease;
+        }
+
+        .table-row:hover {
+            background: #f8f9fa;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-cell {
+            padding: 24px;
+            vertical-align: middle;
+        }
+
+        .client-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .client-email {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .date-info {
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .time-info {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-sent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #16a085;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #138d75;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(22, 160, 133, 0.3);
+        }
+
+        .btn-secondary {
+            background: #34495e;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #2c3e50;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(52, 73, 94, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #7f8c8d;
+            border: 1px solid #bdc3c7;
+        }
+
+        .btn-outline:hover {
+            background: #7f8c8d;
+            color: white;
+            border-color: #7f8c8d;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .page-info {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .page-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 1px solid #bdc3c7;
+            background: white;
+            color: #34495e;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #34495e;
+            color: white;
+            border-color: #34495e;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 8px;
+        }
+
+        .page-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #bdc3c7;
+            background: white;
+            color: #34495e;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .page-number:hover {
+            background: #34495e;
+            color: white;
+            border-color: #34495e;
+        }
+
+        .page-number.active {
+            background: #16a085;
+            color: white;
+            border-color: #16a085;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 32px;
+            color: #7f8c8d;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #34495e;
+        }
+
+        .empty-description {
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .material-icons {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .nav-menu {
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 24px 16px;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+
+            .card-header {
+                padding: 24px 16px;
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .history-table {
+                font-size: 14px;
+            }
+
+            .table-header th,
+            .table-cell {
+                padding: 16px 12px;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+
+            .pagination {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .page-numbers {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">sindankantei</div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item">鑑定書作成</a>
+                <a href="#" class="nav-item active">鑑定履歴</a>
+                <a href="#" class="nav-item">テンプレート設定</a>
+                <a href="#" class="nav-item">ログアウト</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">鑑定履歴管理</h1>
+            <p class="page-subtitle">過去の鑑定記録を確認し、PDFの再ダウンロードや再送信が可能です</p>
+        </div>
+
+        <div class="history-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <span class="material-icons">history</span>
+                    鑑定履歴一覧
+                </h2>
+                <div class="total-count">総件数: 127件</div>
+            </div>
+
+            <table class="history-table">
+                <thead class="table-header">
+                    <tr>
+                        <th>日時</th>
+                        <th>クライアント情報</th>
+                        <th>ステータス</th>
+                        <th>アクション</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-row">
+                        <td class="table-cell">
+                            <div class="date-info">2024年3月15日</div>
+                            <div class="time-info">14:32</div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="client-info">
+                                <div class="client-name">山田 花子</div>
+                                <div class="client-email">yamada.hanako@example.com</div>
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="status-badge status-sent">
+                                <span class="material-icons" style="font-size: 14px;">check_circle</span>
+                                送信済み
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="actions">
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">visibility</span>
+                                    詳細
+                                </button>
+                                <button class="action-btn btn-secondary">
+                                    <span class="material-icons">download</span>
+                                    PDF
+                                </button>
+                                <button class="action-btn btn-outline">
+                                    <span class="material-icons">email</span>
+                                    再送信
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="table-row">
+                        <td class="table-cell">
+                            <div class="date-info">2024年3月14日</div>
+                            <div class="time-info">16:45</div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="client-info">
+                                <div class="client-name">田中 一郎</div>
+                                <div class="client-email">tanaka.ichiro@example.com</div>
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="status-badge status-sent">
+                                <span class="material-icons" style="font-size: 14px;">check_circle</span>
+                                送信済み
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="actions">
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">visibility</span>
+                                    詳細
+                                </button>
+                                <button class="action-btn btn-secondary">
+                                    <span class="material-icons">download</span>
+                                    PDF
+                                </button>
+                                <button class="action-btn btn-outline">
+                                    <span class="material-icons">email</span>
+                                    再送信
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="table-row">
+                        <td class="table-cell">
+                            <div class="date-info">2024年3月13日</div>
+                            <div class="time-info">10:18</div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="client-info">
+                                <div class="client-name">佐藤 美穂</div>
+                                <div class="client-email">sato.miho@example.com</div>
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="status-badge status-draft">
+                                <span class="material-icons" style="font-size: 14px;">schedule</span>
+                                未送信
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="actions">
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">visibility</span>
+                                    詳細
+                                </button>
+                                <button class="action-btn btn-secondary">
+                                    <span class="material-icons">download</span>
+                                    PDF
+                                </button>
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">send</span>
+                                    送信
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="table-row">
+                        <td class="table-cell">
+                            <div class="date-info">2024年3月12日</div>
+                            <div class="time-info">13:27</div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="client-info">
+                                <div class="client-name">高橋 健二</div>
+                                <div class="client-email">takahashi.kenji@example.com</div>
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="status-badge status-error">
+                                <span class="material-icons" style="font-size: 14px;">error</span>
+                                送信失敗
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="actions">
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">visibility</span>
+                                    詳細
+                                </button>
+                                <button class="action-btn btn-secondary">
+                                    <span class="material-icons">download</span>
+                                    PDF
+                                </button>
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">refresh</span>
+                                    再試行
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="table-row">
+                        <td class="table-cell">
+                            <div class="date-info">2024年3月11日</div>
+                            <div class="time-info">09:53</div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="client-info">
+                                <div class="client-name">鈴木 太郎</div>
+                                <div class="client-email">suzuki.taro@example.com</div>
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="status-badge status-sent">
+                                <span class="material-icons" style="font-size: 14px;">check_circle</span>
+                                送信済み
+                            </div>
+                        </td>
+                        <td class="table-cell">
+                            <div class="actions">
+                                <button class="action-btn btn-primary">
+                                    <span class="material-icons">visibility</span>
+                                    詳細
+                                </button>
+                                <button class="action-btn btn-secondary">
+                                    <span class="material-icons">download</span>
+                                    PDF
+                                </button>
+                                <button class="action-btn btn-outline">
+                                    <span class="material-icons">email</span>
+                                    再送信
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn" disabled>
+                <span class="material-icons">chevron_left</span>
+                前のページ
+            </button>
+            
+            <div class="page-info">1-5 / 127件</div>
+            
+            <div class="page-numbers">
+                <a href="#" class="page-number active">1</a>
+                <a href="#" class="page-number">2</a>
+                <a href="#" class="page-number">3</a>
+                <a href="#" class="page-number">4</a>
+                <a href="#" class="page-number">5</a>
+                <span style="color: #7f8c8d; padding: 0 8px;">...</span>
+                <a href="#" class="page-number">26</a>
+            </div>
+            
+            <button class="page-btn">
+                次のページ
+                <span class="material-icons">chevron_right</span>
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // ダミーデータとインタラクション
+        document.addEventListener('DOMContentLoaded', function() {
+            // アクションボタンのイベントリスナー
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.textContent.trim();
+                    const row = this.closest('.table-row');
+                    const clientName = row.querySelector('.client-name').textContent;
+                    
+                    switch(action) {
+                        case '詳細':
+                            alert(`${clientName}さんの鑑定詳細を表示します`);
+                            break;
+                        case 'PDF':
+                            alert(`${clientName}さんの鑑定書PDFをダウンロードします`);
+                            break;
+                        case '再送信':
+                            alert(`${clientName}さんに鑑定書を再送信します`);
+                            break;
+                        case '送信':
+                            alert(`${clientName}さんに鑑定書を送信します`);
+                            break;
+                        case '再試行':
+                            alert(`${clientName}さんへの送信を再試行します`);
+                            break;
+                    }
+                });
+            });
+
+            // ページネーションのクリック
+            document.querySelectorAll('.page-number').forEach(pageBtn => {
+                pageBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('.page-number.active').classList.remove('active');
+                    this.classList.add('active');
+                });
+            });
+
+            // テーブル行のホバーエフェクト
+            document.querySelectorAll('.table-row').forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(4px)';
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!--
+【CF_06引き継ぎ情報】
+UI要件: 鑑定履歴の一覧表示、各履歴の詳細表示・PDF再ダウンロード・メール再送信機能、ページネーション
+必要API: GET /api/kantei/history - 鑑定履歴一覧取得（ページング対応）
+入力データ: { page: number, limit: number }
+出力データ: { 
+  total: number,
+  page: number, 
+  limit: number,
+  items: [
+    {
+      id: number,
+      client_name: string,
+      client_email: string,
+      created_at: string,
+      status: "sent" | "draft" | "error",
+      sent_count: number
+    }
+  ]
+}
+UI文脈: ダッシュボードから遷移、各履歴レコードから詳細画面・PDF生成・メール送信画面への遷移
+特記事項: ページネーション処理、各アクションボタンのステート管理、レスポンシブ対応
+
+追加API:
+- GET /api/kantei/detail/{id} - 鑑定詳細情報取得
+- POST /api/kantei/resend/{id} - 鑑定書再送信
+- GET /api/kantei/pdf/{id}/download - PDF再ダウンロード
+-->

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-005: テンプレート設定ページ | sindankantei</title>
+    
+    <!-- MUI v5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/@mui/material@5.15.0/umd/material-ui.development.js" rel="prefetch">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <style>
+        /* プロフェッショナルテーマ設定 */
+        :root {
+            --primary-main: #34495e;
+            --primary-light: #566573;
+            --primary-dark: #2c3e50;
+            --secondary-main: #bdc3c7;
+            --secondary-light: #d5dbdb;
+            --secondary-dark: #85929e;
+            --success-main: #16a085;
+            --success-light: #48c9b0;
+            --warning-main: #f39c12;
+            --error-main: #e74c3c;
+            --background-default: #ffffff;
+            --background-paper: #fafbfc;
+            --text-primary: #2c3e50;
+            --text-secondary: #566573;
+            --text-disabled: #bdc3c7;
+            --border-color: #d5dbdb;
+            --shadow-1: 0 2px 4px rgba(52, 73, 94, 0.1);
+            --shadow-2: 0 4px 8px rgba(52, 73, 94, 0.12);
+            --shadow-3: 0 8px 16px rgba(52, 73, 94, 0.14);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Times New Roman", "Noto Serif JP", serif;
+            background-color: var(--background-default);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* レイアウト */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--background-paper);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px;
+            max-width: calc(100vw - 280px);
+        }
+        
+        /* ヘッダー */
+        .page-header {
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        /* メインレイアウト */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            max-width: 1400px;
+        }
+        
+        /* 設定エリア */
+        .settings-panel {
+            background-color: var(--background-paper);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: var(--shadow-2);
+        }
+        
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--primary-main);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-main);
+            padding-bottom: 8px;
+        }
+        
+        /* プレビューエリア */
+        .preview-panel {
+            background-color: var(--background-paper);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: var(--shadow-2);
+            position: sticky;
+            top: 32px;
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+        
+        /* フォーム要素 */
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background-color: var(--background-default);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background-color: var(--background-default);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.1);
+        }
+        
+        /* ファイルアップロード */
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--background-default);
+        }
+        
+        .file-upload-area:hover {
+            border-color: var(--primary-main);
+            background-color: var(--background-paper);
+        }
+        
+        .file-upload-area.dragover {
+            border-color: var(--primary-main);
+            background-color: var(--background-paper);
+            box-shadow: var(--shadow-2);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: var(--text-disabled);
+            margin-bottom: 16px;
+        }
+        
+        .upload-text {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .upload-hint {
+            font-size: 0.75rem;
+            color: var(--text-disabled);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        /* 現在のロゴ表示 */
+        .current-logo {
+            margin-top: 16px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--background-default);
+        }
+        
+        .current-logo img {
+            max-width: 200px;
+            max-height: 100px;
+            object-fit: contain;
+        }
+        
+        /* カラーパレット */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .color-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .color-option:hover {
+            border-color: var(--primary-main);
+            box-shadow: var(--shadow-1);
+        }
+        
+        .color-option.selected {
+            border-color: var(--primary-main);
+            background-color: var(--background-paper);
+            box-shadow: var(--shadow-2);
+        }
+        
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .color-name {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        /* フォントサイズオプション */
+        .font-size-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .font-size-option {
+            padding: 16px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--background-default);
+        }
+        
+        .font-size-option:hover {
+            border-color: var(--primary-main);
+            box-shadow: var(--shadow-1);
+        }
+        
+        .font-size-option.selected {
+            border-color: var(--primary-main);
+            background-color: var(--background-paper);
+            box-shadow: var(--shadow-2);
+        }
+        
+        .font-size-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .font-size-example {
+            color: var(--text-secondary);
+        }
+        
+        /* プレビュー鑑定書 */
+        .preview-document {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 32px;
+            background-color: var(--background-default);
+            box-shadow: var(--shadow-1);
+            margin-top: 16px;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary-main);
+        }
+        
+        .preview-logo {
+            max-width: 150px;
+            max-height: 80px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+        
+        .preview-business-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-main);
+            margin-bottom: 8px;
+        }
+        
+        .preview-operator-name {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .preview-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .preview-content {
+            margin-top: 24px;
+        }
+        
+        .preview-section {
+            margin-bottom: 24px;
+        }
+        
+        .preview-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-main);
+            margin-bottom: 12px;
+            border-left: 4px solid var(--success-main);
+            padding-left: 12px;
+        }
+        
+        .preview-text {
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+        
+        /* アクションボタン */
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-main);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow-2);
+        }
+        
+        .btn-success {
+            background-color: var(--success-main);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #138d75;
+            box-shadow: var(--shadow-2);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-main);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            box-shadow: var(--shadow-2);
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 1200px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .preview-panel {
+                position: static;
+                max-height: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+                max-width: 100vw;
+            }
+            
+            .content-layout {
+                gap: 16px;
+            }
+            
+            .settings-panel,
+            .preview-panel {
+                padding: 16px;
+            }
+        }
+        
+        /* サイドバー */
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin: 0;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--background-paper);
+            border-left-color: var(--primary-light);
+        }
+        
+        .nav-link.active {
+            background-color: var(--background-paper);
+            border-left-color: var(--primary-main);
+            color: var(--primary-main);
+            font-weight: 600;
+        }
+        
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .brand {
+            padding: 0 24px 24px 24px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+        
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-main);
+        }
+        
+        /* アラート */
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 1px solid;
+        }
+        
+        .alert-success {
+            background-color: #e8f5f3;
+            border-color: var(--success-main);
+            color: #138d75;
+        }
+        
+        .alert-warning {
+            background-color: #fef7e6;
+            border-color: var(--warning-main);
+            color: #d68910;
+        }
+    </style>
+</head>
+<body>
+    <!--
+    【CF_06引き継ぎ情報】
+    UI要件: テンプレート設定の管理（ロゴアップロード、屋号設定、基本色・フォント選択、リアルタイムプレビュー）
+    必要API: 
+    - GET /api/template/settings - 現在の設定取得
+    - PUT /api/template/update - 設定更新
+    - POST /api/template/upload-logo - ロゴ画像アップロード
+    入力データ: { 
+        logo_file: File (JPG/PNG, max 2MB),
+        business_name: string,
+        operator_name: string,
+        color_theme: string,
+        font_size: string
+    }
+    出力データ: { 
+        success: boolean,
+        logo_url: string,
+        settings: TemplateSettingsResponse 
+    }
+    UI文脈: 設定変更時のリアルタイムプレビュー更新、保存後の成功/エラーメッセージ表示
+    特記事項: ファイルアップロード（FormData）、画像プレビュー機能、ドラッグ&ドロップ対応
+    -->
+    
+    <div class="app-layout">
+        <!-- サイドバー -->
+        <nav class="sidebar">
+            <div class="brand">
+                <div class="brand-title">sindankantei</div>
+            </div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="material-icons nav-icon">dashboard</span>
+                        ダッシュボード
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="material-icons nav-icon">description</span>
+                        鑑定書作成
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="material-icons nav-icon">send</span>
+                        プレビュー・送信
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="material-icons nav-icon">history</span>
+                        鑑定履歴
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <span class="material-icons nav-icon">palette</span>
+                        テンプレート設定
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">テンプレート設定</h1>
+                <p class="page-subtitle">鑑定書のロゴ・屋号・基本デザインをカスタマイズして独自ブランディングを実現</p>
+            </header>
+            
+            <div class="content-layout">
+                <!-- 設定エリア -->
+                <div class="settings-panel">
+                    <h2 class="panel-title">設定項目</h2>
+                    
+                    <form id="templateSettingsForm">
+                        <!-- ロゴアップロード -->
+                        <div class="form-group">
+                            <label class="form-label">ロゴ画像</label>
+                            <div class="file-upload-area" id="logoUploadArea">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">クリックまたはドラッグしてロゴ画像をアップロード</div>
+                                <div class="upload-hint">JPG, PNG形式 / 最大2MB</div>
+                                <input type="file" id="logoFile" class="file-input" accept=".jpg,.jpeg,.png" />
+                            </div>
+                            
+                            <!-- 現在のロゴ表示 -->
+                            <div class="current-logo" id="currentLogo" style="display: none;">
+                                <p style="margin-bottom: 8px; font-size: 0.875rem; color: var(--text-secondary);">現在のロゴ:</p>
+                                <img id="currentLogoImg" alt="現在のロゴ" />
+                                <button type="button" class="btn btn-secondary" style="margin-top: 8px; padding: 4px 8px; font-size: 0.75rem;" onclick="removeLogo()">削除</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 屋号・事業者名 -->
+                        <div class="form-group">
+                            <label for="businessName" class="form-label">屋号・事業所名</label>
+                            <input type="text" id="businessName" class="form-input" value="占いサロン 星花" placeholder="例: 占いサロン 星花" />
+                        </div>
+                        
+                        <!-- 鑑定士名 -->
+                        <div class="form-group">
+                            <label for="operatorName" class="form-label">鑑定士名</label>
+                            <input type="text" id="operatorName" class="form-input" value="星野 花子" placeholder="例: 星野 花子" />
+                        </div>
+                        
+                        <!-- 基本色選択 -->
+                        <div class="form-group">
+                            <label class="form-label">基本色テーマ</label>
+                            <div class="color-palette">
+                                <div class="color-option selected" data-color="professional">
+                                    <div class="color-preview" style="background-color: #34495e;"></div>
+                                    <div class="color-name">プロフェッショナル<br>（紺色）</div>
+                                </div>
+                                <div class="color-option" data-color="elegant">
+                                    <div class="color-preview" style="background-color: #8b4513;"></div>
+                                    <div class="color-name">エレガント<br>（茶色）</div>
+                                </div>
+                                <div class="color-option" data-color="modern">
+                                    <div class="color-preview" style="background-color: #2c3e50;"></div>
+                                    <div class="color-name">モダン<br>（ダークグレー）</div>
+                                </div>
+                                <div class="color-option" data-color="warm">
+                                    <div class="color-preview" style="background-color: #d35400;"></div>
+                                    <div class="color-name">ウォーム<br>（オレンジ）</div>
+                                </div>
+                                <div class="color-option" data-color="nature">
+                                    <div class="color-preview" style="background-color: #27ae60;"></div>
+                                    <div class="color-name">ナチュラル<br>（緑色）</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- フォントサイズ -->
+                        <div class="form-group">
+                            <label class="form-label">フォントサイズ</label>
+                            <div class="font-size-options">
+                                <div class="font-size-option" data-size="small">
+                                    <div class="font-size-label">小</div>
+                                    <div class="font-size-example" style="font-size: 0.75rem;">読みやすい</div>
+                                </div>
+                                <div class="font-size-option selected" data-size="medium">
+                                    <div class="font-size-label">中</div>
+                                    <div class="font-size-example" style="font-size: 0.875rem;">標準的</div>
+                                </div>
+                                <div class="font-size-option" data-size="large">
+                                    <div class="font-size-label">大</div>
+                                    <div class="font-size-example" style="font-size: 1rem;">見やすい</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- アクションボタン -->
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-success">
+                                <span class="material-icons" style="font-size: 16px; margin-right: 8px; vertical-align: text-bottom;">save</span>
+                                設定を保存
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                <span class="material-icons" style="font-size: 16px; margin-right: 8px; vertical-align: text-bottom;">refresh</span>
+                                リセット
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- プレビューエリア -->
+                <div class="preview-panel">
+                    <h2 class="panel-title">プレビュー</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 0.875rem;">
+                        設定した内容が実際の鑑定書でどのように表示されるかを確認できます
+                    </p>
+                    
+                    <div class="preview-document" id="previewDocument">
+                        <div class="preview-header">
+                            <div id="previewLogo" style="display: none;">
+                                <img class="preview-logo" alt="ロゴ" />
+                            </div>
+                            <div class="preview-business-name" id="previewBusinessName">占いサロン 星花</div>
+                            <div class="preview-operator-name" id="previewOperatorName">鑑定士：星野 花子</div>
+                            <h1 class="preview-title">九星気学鑑定書</h1>
+                        </div>
+                        
+                        <div class="preview-content">
+                            <div class="preview-section">
+                                <h3 class="preview-section-title">ご鑑定者様情報</h3>
+                                <div class="preview-text">
+                                    <p>お名前：田中 太郎 様</p>
+                                    <p>生年月日：昭和60年3月15日</p>
+                                    <p>本命星：二黒土星</p>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-section">
+                                <h3 class="preview-section-title">九星気学による性格鑑定</h3>
+                                <div class="preview-text">
+                                    <p>あなたは二黒土星の生まれで、大地のような包容力と忍耐力を持つ方です。周囲の人々から信頼され、頼りにされる存在として活躍されることでしょう。</p>
+                                    
+                                    <p>特に人間関係においては、相手の気持ちを理解する能力に長けており、調和を重んじる性格です。一方で、自分の意見をはっきりと述べることが苦手な面もありますが...</p>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-section">
+                                <h3 class="preview-section-title">吉方位アドバイス</h3>
+                                <div class="preview-text">
+                                    <p>2025年のあなたの吉方位は<strong>北東方向</strong>です。</p>
+                                    <p>特に3月、6月、9月はこの方角への移動が開運につながります。重要な決断や新しいことを始める際は、この方角を意識してみてください。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // カラーテーマの定義
+        const colorThemes = {
+            professional: { primary: '#34495e', accent: '#16a085', name: 'プロフェッショナル' },
+            elegant: { primary: '#8b4513', accent: '#d2691e', name: 'エレガント' },
+            modern: { primary: '#2c3e50', accent: '#3498db', name: 'モダン' },
+            warm: { primary: '#d35400', accent: '#f39c12', name: 'ウォーム' },
+            nature: { primary: '#27ae60', accent: '#2ecc71', name: 'ナチュラル' }
+        };
+        
+        // フォントサイズの定義
+        const fontSizes = {
+            small: { title: '1.75rem', section: '1.1rem', text: '0.9rem' },
+            medium: { title: '2rem', section: '1.25rem', text: '1rem' },
+            large: { title: '2.25rem', section: '1.4rem', text: '1.1rem' }
+        };
+        
+        // 現在の設定
+        let currentSettings = {
+            logoFile: null,
+            logoUrl: null,
+            businessName: '占いサロン 星花',
+            operatorName: '星野 花子',
+            colorTheme: 'professional',
+            fontSize: 'medium'
+        };
+        
+        // DOM読み込み完了後の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            loadSettings();
+            updatePreview();
+        });
+        
+        // イベントリスナーの初期化
+        function initializeEventListeners() {
+            // ファイルアップロード関連
+            const logoUploadArea = document.getElementById('logoUploadArea');
+            const logoFileInput = document.getElementById('logoFile');
+            
+            logoUploadArea.addEventListener('click', () => logoFileInput.click());
+            logoFileInput.addEventListener('change', handleLogoUpload);
+            
+            // ドラッグ&ドロップ
+            logoUploadArea.addEventListener('dragover', handleDragOver);
+            logoUploadArea.addEventListener('drop', handleDrop);
+            logoUploadArea.addEventListener('dragenter', (e) => {
+                e.preventDefault();
+                logoUploadArea.classList.add('dragover');
+            });
+            logoUploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                if (!logoUploadArea.contains(e.relatedTarget)) {
+                    logoUploadArea.classList.remove('dragover');
+                }
+            });
+            
+            // テキストフィールドのリアルタイム更新
+            document.getElementById('businessName').addEventListener('input', (e) => {
+                currentSettings.businessName = e.target.value;
+                updatePreview();
+            });
+            
+            document.getElementById('operatorName').addEventListener('input', (e) => {
+                currentSettings.operatorName = e.target.value;
+                updatePreview();
+            });
+            
+            // カラーオプション選択
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    currentSettings.colorTheme = option.dataset.color;
+                    updatePreview();
+                });
+            });
+            
+            // フォントサイズオプション選択
+            document.querySelectorAll('.font-size-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.font-size-option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    currentSettings.fontSize = option.dataset.size;
+                    updatePreview();
+                });
+            });
+            
+            // フォーム送信
+            document.getElementById('templateSettingsForm').addEventListener('submit', handleFormSubmit);
+        }
+        
+        // ドラッグオーバーハンドラー
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        }
+        
+        // ドロップハンドラー
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('logoUploadArea').classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (validateImageFile(file)) {
+                    handleLogoFile(file);
+                }
+            }
+        }
+        
+        // ロゴアップロードハンドラー
+        function handleLogoUpload(e) {
+            const file = e.target.files[0];
+            if (file && validateImageFile(file)) {
+                handleLogoFile(file);
+            }
+        }
+        
+        // 画像ファイルのバリデーション
+        function validateImageFile(file) {
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            
+            if (!allowedTypes.includes(file.type)) {
+                showAlert('JPEGまたはPNG形式の画像ファイルを選択してください。', 'warning');
+                return false;
+            }
+            
+            if (file.size > maxSize) {
+                showAlert('ファイルサイズは2MB以下にしてください。', 'warning');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // ロゴファイル処理
+        function handleLogoFile(file) {
+            currentSettings.logoFile = file;
+            
+            // ファイルリーダーでプレビュー生成
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentSettings.logoUrl = e.target.result;
+                showCurrentLogo(e.target.result);
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // 現在のロゴ表示
+        function showCurrentLogo(src) {
+            const currentLogoDiv = document.getElementById('currentLogo');
+            const currentLogoImg = document.getElementById('currentLogoImg');
+            
+            currentLogoImg.src = src;
+            currentLogoDiv.style.display = 'block';
+        }
+        
+        // ロゴ削除
+        function removeLogo() {
+            currentSettings.logoFile = null;
+            currentSettings.logoUrl = null;
+            document.getElementById('currentLogo').style.display = 'none';
+            document.getElementById('logoFile').value = '';
+            updatePreview();
+        }
+        
+        // プレビュー更新
+        function updatePreview() {
+            const previewDoc = document.getElementById('previewDocument');
+            const previewLogo = document.getElementById('previewLogo');
+            const previewBusinessName = document.getElementById('previewBusinessName');
+            const previewOperatorName = document.getElementById('previewOperatorName');
+            
+            // ロゴの更新
+            if (currentSettings.logoUrl) {
+                const logoImg = previewLogo.querySelector('img');
+                logoImg.src = currentSettings.logoUrl;
+                previewLogo.style.display = 'block';
+            } else {
+                previewLogo.style.display = 'none';
+            }
+            
+            // テキストの更新
+            previewBusinessName.textContent = currentSettings.businessName || '屋号・事業所名';
+            previewOperatorName.textContent = `鑑定士：${currentSettings.operatorName || '鑑定士名'}`;
+            
+            // カラーテーマの適用
+            const theme = colorThemes[currentSettings.colorTheme];
+            document.documentElement.style.setProperty('--primary-main', theme.primary);
+            document.documentElement.style.setProperty('--success-main', theme.accent);
+            
+            // フォントサイズの適用
+            const fontSize = fontSizes[currentSettings.fontSize];
+            const previewTitle = previewDoc.querySelector('.preview-title');
+            const previewSectionTitles = previewDoc.querySelectorAll('.preview-section-title');
+            const previewTexts = previewDoc.querySelectorAll('.preview-text');
+            
+            previewTitle.style.fontSize = fontSize.title;
+            previewSectionTitles.forEach(title => title.style.fontSize = fontSize.section);
+            previewTexts.forEach(text => text.style.fontSize = fontSize.text);
+        }
+        
+        // 設定の読み込み（将来的にAPIから）
+        async function loadSettings() {
+            try {
+                // 将来的にはAPIから設定を取得
+                // const response = await fetch('/api/template/settings');
+                // const settings = await response.json();
+                
+                // 現在は初期値を使用
+                console.log('設定を読み込みました');
+            } catch (error) {
+                console.error('設定の読み込みに失敗しました:', error);
+            }
+        }
+        
+        // フォーム送信処理
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            
+            // ロゴファイルの追加
+            if (currentSettings.logoFile) {
+                formData.append('logo_file', currentSettings.logoFile);
+            }
+            
+            // その他の設定データ
+            const settingsData = {
+                business_name: currentSettings.businessName,
+                operator_name: currentSettings.operatorName,
+                color_theme: currentSettings.colorTheme,
+                font_size: currentSettings.fontSize
+            };
+            
+            formData.append('settings', JSON.stringify(settingsData));
+            
+            try {
+                // 保存処理の表示
+                const submitButton = document.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<span class="material-icons" style="font-size: 16px; margin-right: 8px; vertical-align: text-bottom;">hourglass_empty</span>保存中...';
+                submitButton.disabled = true;
+                
+                // APIへの送信（実装予定）
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 模擬的な遅延
+                
+                // 成功メッセージ
+                showAlert('テンプレート設定が正常に保存されました。', 'success');
+                
+                // ボタンの復元
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+            } catch (error) {
+                console.error('設定の保存に失敗しました:', error);
+                showAlert('設定の保存に失敗しました。再度お試しください。', 'warning');
+                
+                // ボタンの復元
+                const submitButton = document.querySelector('button[type="submit"]');
+                submitButton.innerHTML = '<span class="material-icons" style="font-size: 16px; margin-right: 8px; vertical-align: text-bottom;">save</span>設定を保存';
+                submitButton.disabled = false;
+            }
+        }
+        
+        // フォームのリセット
+        function resetForm() {
+            if (confirm('設定をリセットしてもよろしいですか？')) {
+                // 初期値に戻す
+                currentSettings = {
+                    logoFile: null,
+                    logoUrl: null,
+                    businessName: '占いサロン 星花',
+                    operatorName: '星野 花子',
+                    colorTheme: 'professional',
+                    fontSize: 'medium'
+                };
+                
+                // フォームの表示を更新
+                document.getElementById('businessName').value = currentSettings.businessName;
+                document.getElementById('operatorName').value = currentSettings.operatorName;
+                document.getElementById('logoFile').value = '';
+                document.getElementById('currentLogo').style.display = 'none';
+                
+                // 選択状態をリセット
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.toggle('selected', option.dataset.color === 'professional');
+                });
+                
+                document.querySelectorAll('.font-size-option').forEach(option => {
+                    option.classList.toggle('selected', option.dataset.size === 'medium');
+                });
+                
+                updatePreview();
+                showAlert('設定をリセットしました。', 'success');
+            }
+        }
+        
+        // アラート表示
+        function showAlert(message, type = 'success') {
+            // 既存のアラートを削除
+            const existingAlert = document.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            
+            // 新しいアラートを作成
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            // フォームの上に挿入
+            const form = document.getElementById('templateSettingsForm');
+            form.insertBefore(alert, form.firstChild);
+            
+            // 3秒後に自動削除
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

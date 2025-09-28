@@ -1,0 +1,308 @@
+/* 印刷用CSS - A4サイズ最適化 */
+
+@media print {
+  /* ページ設定 */
+  @page {
+    size: A4;
+    margin: 15mm;
+    padding: 0;
+  }
+
+  /* 基本リセット */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-family: var(--certificate-font-body, 'Yu Gothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif) !important;
+    line-height: 1.4 !important;
+    background: #fff !important;
+  }
+
+  /* 不要な要素を非表示 */
+  .no-print,
+  .MuiAppBar-root,
+  .MuiButton-root,
+  .MuiFab-root,
+  .MuiSnackbar-root,
+  .MuiDialog-root,
+  nav,
+  header,
+  footer,
+  .action-panel,
+  .control-panel {
+    display: none !important;
+  }
+
+  /* 印刷コンテナ */
+  .print-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    page-break-inside: avoid;
+  }
+
+  /* ヘッダー */
+  .print-header {
+    text-align: center;
+    margin-bottom: 10mm;
+    padding-bottom: 3mm;
+    border-bottom: 1px solid var(--certificate-primary);
+  }
+
+  .print-header h1 {
+    font-family: var(--certificate-font-title) !important;
+    font-size: 24pt !important;
+    font-weight: bold !important;
+    color: var(--certificate-primary) !important;
+    margin: 0 0 2mm 0 !important;
+  }
+
+  .print-header .subtitle {
+    font-size: 12pt !important;
+    color: #666 !important;
+    margin: 0 !important;
+  }
+
+  /* クライアント情報 */
+  .client-info-grid {
+    margin-bottom: 8mm;
+  }
+
+  .client-info-grid .MuiGrid-item {
+    padding: 1mm !important;
+  }
+
+  .client-info-field {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    font-size: 11pt !important;
+  }
+
+  .client-info-label {
+    font-weight: bold !important;
+    min-width: 25mm;
+    font-size: 11pt !important;
+  }
+
+  .client-info-value {
+    font-size: 11pt !important;
+  }
+
+  /* セクションヘッダー */
+  .section-header {
+    font-family: var(--certificate-font-heading) !important;
+    font-size: 14pt !important;
+    font-weight: bold !important;
+    margin: 6mm 0 3mm 0 !important;
+    padding-bottom: 1mm !important;
+    border-bottom: 1px solid #ddd !important;
+  }
+
+  .section-header.kyusei {
+    color: #1976d2 !important;
+  }
+
+  .section-header.seimei {
+    color: #ff5722 !important;
+  }
+
+  /* 結果グリッド */
+  .result-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(40mm, 1fr)) !important;
+    gap: 3mm !important;
+    margin-bottom: 5mm !important;
+  }
+
+  .result-item {
+    text-align: center;
+    padding: 2mm;
+    border: 1px solid #e0e0e0;
+    border-radius: 2mm;
+  }
+
+  .result-item .label {
+    font-size: 9pt !important;
+    color: #666 !important;
+    display: block;
+    margin-bottom: 1mm;
+  }
+
+  .result-item .value {
+    font-size: 12pt !important;
+    font-weight: bold !important;
+  }
+
+  .result-item .value.primary {
+    color: #1976d2 !important;
+  }
+
+  .result-item .value.secondary {
+    color: #ff5722 !important;
+  }
+
+  /* 方位盤セクション */
+  .hoiban-section {
+    margin: 6mm 0;
+  }
+
+  .hoiban-section .MuiCard-root {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+
+  .hoiban-section .kyusei-hoiban {
+    transform: scale(0.7) !important;
+    transform-origin: center top !important;
+  }
+
+  /* タブ関連は印刷時は非表示 */
+  .MuiTabs-root,
+  .MuiTab-root {
+    display: none !important;
+  }
+
+  /* 方位盤の内容を全て表示 */
+  .hoiban-section [role="tabpanel"] {
+    display: block !important;
+  }
+
+  /* 総合スコア */
+  .score-section {
+    text-align: center;
+    padding: 3mm;
+    background-color: #f5f5f5 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 2mm;
+    margin: 3mm 0;
+  }
+
+  .score-section .score-value {
+    font-size: 16pt !important;
+    font-weight: bold !important;
+    color: #1976d2 !important;
+  }
+
+  .score-section .score-grade {
+    font-size: 12pt !important;
+    color: #666 !important;
+  }
+
+  /* フッター */
+  .print-footer {
+    margin-top: 10mm;
+    padding-top: 3mm;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    font-size: 9pt !important;
+    color: #666 !important;
+  }
+
+  /* 改ページ制御 */
+  .page-break {
+    page-break-before: always;
+  }
+
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+
+  /* 文字サイズ調整 */
+  h1 { font-size: 20pt !important; }
+  h2 { font-size: 16pt !important; }
+  h3 { font-size: 14pt !important; }
+  h4 { font-size: 12pt !important; }
+  h5 { font-size: 11pt !important; }
+  h6 { font-size: 10pt !important; }
+  p, div, span { font-size: 10pt !important; }
+
+  /* アコーディオンは印刷時に展開 */
+  .MuiAccordion-root {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    margin: 2mm 0 !important;
+  }
+
+  .MuiAccordionSummary-root {
+    min-height: auto !important;
+    padding: 1mm 2mm !important;
+    background-color: #f5f5f5 !important;
+  }
+
+  .MuiAccordionDetails-root {
+    padding: 2mm !important;
+    border-top: 1px solid #ddd !important;
+  }
+
+  /* Chipコンポーネント */
+  .MuiChip-root {
+    font-size: 8pt !important;
+    height: auto !important;
+    padding: 0.5mm 1mm !important;
+  }
+
+  /* 編集可能フィールドは印刷時は通常テキストとして表示 */
+  .editable-field {
+    border: none !important;
+    background: transparent !important;
+    cursor: default !important;
+  }
+
+  /* 余白調整 */
+  .MuiBox-root {
+    margin: 1mm 0 !important;
+  }
+
+  .MuiTypography-root {
+    margin: 0.5mm 0 !important;
+  }
+
+  /* 色の調整 */
+  .MuiTypography-colorPrimary {
+    color: #1976d2 !important;
+  }
+
+  .MuiTypography-colorSecondary {
+    color: #ff5722 !important;
+  }
+
+  .MuiTypography-colorTextSecondary {
+    color: #666 !important;
+  }
+}
+
+/* 画面表示用のスタイル（印刷プレビュー時） */
+@media screen {
+  .print-preview-container {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding: 0 0 2rem 0;
+  }
+
+  .print-container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(0.8);
+    transform-origin: top center;
+  }
+
+  .control-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 1rem;
+  }
+}

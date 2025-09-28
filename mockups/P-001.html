@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - sindankantei</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/@mui/material@5.14.18/umd/material-ui.production.min.js" rel="prefetch">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@mui/material@5.14.18/umd/material-ui.production.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", "Noto Serif JP", serif;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+        }
+
+        .login-container {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 16px 32px rgba(52, 73, 94, 0.18);
+            padding: 48px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #34495e 0%, #16a085 100%);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: #566573;
+            font-weight: 400;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome-text h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .welcome-text p {
+            font-size: 1rem;
+            color: #566573;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 2px solid #d5dbdb;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #34495e;
+            box-shadow: 0 0 0 3px rgba(52, 73, 94, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #85929e;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: inherit;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: none;
+            margin-bottom: 16px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(52, 73, 94, 0.2);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            color: #c0392b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(22, 160, 133, 0.1);
+            color: #138d75;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+            border: 1px solid rgba(22, 160, 133, 0.2);
+            display: none;
+        }
+
+        .utage-info {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #d5dbdb;
+        }
+
+        .utage-info p {
+            font-size: 0.875rem;
+            color: #85929e;
+            line-height: 1.6;
+        }
+
+        .utage-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: rgba(22, 160, 133, 0.1);
+            color: #138d75;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 600px) {
+            .login-container {
+                margin: 16px;
+                padding: 32px 24px;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .welcome-text h1 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* アクセシビリティ対応 */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ハイコントラスト対応 */
+        @media (prefers-contrast: high) {
+            .form-input {
+                border-color: #000000;
+            }
+            
+            .form-input:focus {
+                border-color: #000000;
+                box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* フォーカス表示の改善 */
+        .login-button:focus-visible,
+        .form-input:focus-visible {
+            outline: 2px solid #34495e;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!--
+    【CF_06引き継ぎ情報】
+    UI要件: メール・パスワード入力によるログイン認証、UTAGE会員状態連動、エラー表示機能
+    必要API: POST /api/auth/login
+    入力データ: { email: string (EmailStr), password: string }
+    出力データ: { access_token: string, token_type: string, user_id: number, subscription_status: string }
+    UI文脈: 認証成功時はダッシュボードページ（/dashboard）にリダイレクト、失敗時はエラーメッセージ表示
+    特記事項: UTAGE Webhook連携による課金状態確認、JWT認証、セッション管理、3秒以内の応答時間制限
+    -->
+
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo">sindankantei</div>
+            <div class="subtitle">プロフェッショナル鑑定書作成システム</div>
+        </div>
+
+        <div class="welcome-text">
+            <h1>ログイン</h1>
+            <p>鑑定業務の効率化を実現する<br>専門ツールにアクセスしてください</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="error-message" id="errorMessage" role="alert" aria-live="polite">
+            </div>
+
+            <div class="success-message" id="successMessage" role="alert" aria-live="polite">
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">メールアドレス</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="your@email.com"
+                    required
+                    aria-describedby="email-help"
+                    autocomplete="email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">パスワード</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input"
+                    placeholder="パスワードを入力"
+                    required
+                    aria-describedby="password-help"
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="login-button"
+                id="loginButton"
+                aria-describedby="login-help"
+            >
+                <div class="button-content">
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <span id="buttonText">ログイン</span>
+                </div>
+            </button>
+        </form>
+
+        <div class="utage-info">
+            <p>このシステムはUTAGE会員管理システムと連携しています</p>
+            <div class="utage-badge">
+                🔒 セキュア認証
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ログイン処理のJavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginButton = document.getElementById('loginButton');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // エラーメッセージ表示関数
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                
+                // エラーメッセージにフォーカスを移動（スクリーンリーダー対応）
+                errorMessage.focus();
+            }
+
+            // 成功メッセージ表示関数
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // 成功メッセージにフォーカスを移動
+                successMessage.focus();
+            }
+
+            // メッセージクリア関数
+            function clearMessages() {
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+            }
+
+            // ローディング状態の切り替え
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    loginButton.disabled = true;
+                    loadingSpinner.style.display = 'inline-block';
+                    buttonText.textContent = '認証中...';
+                } else {
+                    loginButton.disabled = false;
+                    loadingSpinner.style.display = 'none';
+                    buttonText.textContent = 'ログイン';
+                }
+            }
+
+            // フォーム送信処理
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                clearMessages();
+                setLoading(true);
+
+                const formData = new FormData(loginForm);
+                const email = formData.get('email');
+                const password = formData.get('password');
+
+                // バリデーション
+                if (!email || !password) {
+                    showError('メールアドレスとパスワードを入力してください');
+                    setLoading(false);
+                    return;
+                }
+
+                // メールアドレス形式チェック
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError('正しいメールアドレス形式で入力してください');
+                    setLoading(false);
+                    return;
+                }
+
+                try {
+                    // ここで実際のAPI呼び出しを行う
+                    // 現在はモックアップなので模擬処理
+                    await simulateLogin(email, password);
+                    
+                    showSuccess('ログインに成功しました。ダッシュボードへ移動中...');
+                    
+                    // 3秒後にダッシュボードページにリダイレクト（実装時は即座に遷移）
+                    setTimeout(() => {
+                        // 実装時: window.location.href = '/dashboard';
+                        showSuccess('ダッシュボードページへの遷移が完了しました（モックアップモード）');
+                    }, 2000);
+
+                } catch (error) {
+                    showError(error.message || 'ログインに失敗しました。もう一度お試しください。');
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            // ログイン模擬処理（モックアップ用）
+            async function simulateLogin(email, password) {
+                // 2秒の処理時間を模擬
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // UTAGE連携と課金状態確認の模擬
+                if (email === 'demo@example.com' && password === 'demo123') {
+                    return {
+                        access_token: 'mock_jwt_token_12345',
+                        token_type: 'bearer',
+                        user_id: 1,
+                        subscription_status: 'active'
+                    };
+                } else if (email === 'expired@example.com') {
+                    throw new Error('会員期限が切れています。UTAGEシステムで更新してください。');
+                } else if (password === 'wrong') {
+                    throw new Error('パスワードが正しくありません。');
+                } else {
+                    throw new Error('登録されていないメールアドレスです。');
+                }
+            }
+
+            // 入力フィールドでEnterキー押下時のフォーカス移動
+            document.getElementById('email').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('password').focus();
+                }
+            });
+
+            // パスワードフィールドでEnterキー押下時のフォーム送信
+            document.getElementById('password').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // デモ用の説明メッセージ（開発時は削除）
+            console.log('=== モックアップデモ情報 ===');
+            console.log('テスト用ログイン:');
+            console.log('成功: demo@example.com / demo123');
+            console.log('期限切れ: expired@example.com / any');
+            console.log('パスワード間違い: any@email.com / wrong');
+            console.log('未登録: other@email.com / other');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main, production]
+  pull_request:
+    branches: [main]
+
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_REGION: asia-northeast1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    - name: Configure Docker
+      run: gcloud auth configure-docker
+
+    # FastAPI 統合サービスのデプロイ
+    - name: Build and Deploy FastAPI Service
+      run: |
+        cd services/fastapi-main
+        docker build -t gcr.io/$GCP_PROJECT_ID/unmeiori-api .
+        docker push gcr.io/$GCP_PROJECT_ID/unmeiori-api
+        gcloud run deploy unmeiori-api \
+          --image gcr.io/$GCP_PROJECT_ID/unmeiori-api \
+          --region $GCP_REGION \
+          --allow-unauthenticated \
+          --memory 2Gi \
+          --cpu 1 \
+          --max-instances 10 \
+          --set-env-vars DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+          --set-env-vars JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
+          --set-env-vars CORS_ORIGIN="${{ secrets.CORS_ORIGIN }}" \
+          --set-env-vars KYUSEI_SERVICE_URL="https://kyusei-service-XXXXXXXX-an.a.run.app" \
+          --set-env-vars SEIMEI_SERVICE_URL="https://seimei-service-XXXXXXXX-an.a.run.app"
+
+    # 九星気学サービスのデプロイ
+    - name: Build and Deploy Kyusei Service
+      run: |
+        cd services/kyusei-service
+        docker build -t gcr.io/$GCP_PROJECT_ID/kyusei-service .
+        docker push gcr.io/$GCP_PROJECT_ID/kyusei-service
+        gcloud run deploy kyusei-service \
+          --image gcr.io/$GCP_PROJECT_ID/kyusei-service \
+          --region $GCP_REGION \
+          --allow-unauthenticated \
+          --memory 1Gi \
+          --cpu 0.5 \
+          --max-instances 5
+
+    # 姓名判断サービスのデプロイ
+    - name: Build and Deploy Seimei Service
+      run: |
+        cd services/seimei-service
+        docker build -t gcr.io/$GCP_PROJECT_ID/seimei-service .
+        docker push gcr.io/$GCP_PROJECT_ID/seimei-service
+        gcloud run deploy seimei-service \
+          --image gcr.io/$GCP_PROJECT_ID/seimei-service \
+          --region $GCP_REGION \
+          --allow-unauthenticated \
+          --memory 1Gi \
+          --cpu 0.5 \
+          --max-instances 5
+
+    # サービスURLの出力
+    - name: Get Service URLs
+      run: |
+        echo "FastAPI Service URL:"
+        gcloud run services describe unmeiori-api --region=$GCP_REGION --format="get(status.url)"
+        echo "Kyusei Service URL:"
+        gcloud run services describe kyusei-service --region=$GCP_REGION --format="get(status.url)"
+        echo "Seimei Service URL:"
+        gcloud run services describe seimei-service --region=$GCP_REGION --format="get(status.url)"

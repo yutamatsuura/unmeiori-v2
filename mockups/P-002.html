@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-002 鑑定書作成ページ - sindankantei</title>
+    
+    <!-- MUI v5 CDN -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@mui/material@5.14.0/umd/material-ui.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* デザインシステム カスタムCSS */
+        :root {
+            --primary-color: #34495e;
+            --secondary-color: #bdc3c7;
+            --accent-color: #16a085;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
+            --shadow: 0 2px 8px rgba(52, 73, 94, 0.1);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2c3e50 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .form-section, .preview-section {
+            background: var(--surface-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .preview-card {
+            border: 2px dashed var(--secondary-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            background: #fafbfc;
+        }
+        
+        .result-section {
+            background: var(--surface-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .calculation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .calculation-item {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #138d75 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+        }
+        
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .success-message {
+            color: var(--success-color);
+            background: rgba(39, 174, 96, 0.1);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // MaterialUIがロードされるまで待機
+        const MaterialUI = window.MaterialUI || {};
+        
+        const { 
+            ThemeProvider, 
+            createTheme, 
+            CssBaseline,
+            AppBar,
+            Toolbar,
+            Typography,
+            Container,
+            Grid,
+            Paper,
+            TextField,
+            Button,
+            Box,
+            Card,
+            CardContent,
+            FormControl,
+            InputLabel,
+            Select,
+            MenuItem,
+            Chip,
+            LinearProgress,
+            CircularProgress,
+            Alert,
+            Divider,
+            Icon
+        } = MaterialUI;
+
+        // カスタムテーマ
+        const theme = createTheme({
+            palette: {
+                primary: {
+                    main: '#34495e',
+                    contrastText: '#ffffff'
+                },
+                secondary: {
+                    main: '#bdc3c7'
+                },
+                success: {
+                    main: '#16a085'
+                },
+                background: {
+                    default: '#f8f9fa',
+                    paper: '#ffffff'
+                }
+            },
+            typography: {
+                fontFamily: '"Noto Sans JP", "Roboto", sans-serif'
+            }
+        });
+
+        const KanteiCreatePage = () => {
+            // フォーム状態管理
+            const [formData, setFormData] = React.useState({
+                name: '',
+                birthDate: '',
+                birthTime: '',
+                gender: '',
+                birthPlace: '',
+                email: ''
+            });
+            
+            const [errors, setErrors] = React.useState({});
+            const [isCalculating, setIsCalculating] = React.useState(false);
+            const [calculationResult, setCalculationResult] = React.useState(null);
+            const [showSuccess, setShowSuccess] = React.useState(false);
+
+            // フォーム入力ハンドラ
+            const handleInputChange = (field) => (event) => {
+                const value = event.target.value;
+                setFormData(prev => ({ ...prev, [field]: value }));
+                
+                // エラーメッセージをクリア
+                if (errors[field]) {
+                    setErrors(prev => ({ ...prev, [field]: '' }));
+                }
+            };
+
+            // バリデーション
+            const validateForm = () => {
+                const newErrors = {};
+                
+                if (!formData.name.trim()) newErrors.name = '氏名を入力してください';
+                if (!formData.birthDate) newErrors.birthDate = '生年月日を入力してください';
+                if (!formData.gender) newErrors.gender = '性別を選択してください';
+                if (!formData.email.trim()) newErrors.email = 'メールアドレスを入力してください';
+                
+                setErrors(newErrors);
+                return Object.keys(newErrors).length === 0;
+            };
+
+            // 鑑定計算実行
+            const handleCalculate = async () => {
+                if (!validateForm()) return;
+                
+                setIsCalculating(true);
+                
+                try {
+                    // シミュレーション: 実際のAPI呼び出し
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // モック結果データ
+                    const mockResult = {
+                        kyuseiKigaku: {
+                            honmei: '七赤金星',
+                            gekkyu: '三碧木星',
+                            nichikyu: '九紫火星',
+                            seikaku: '社交性に優れ、華やかな魅力を持つ人です。'
+                        },
+                        seimeiHandan: {
+                            soukaku: 32,
+                            tenkaku: 18,
+                            jinkaku: 24,
+                            chikaku: 14,
+                            gaikaku: 8,
+                            hyoka: '大吉 - 非常に良い運勢を持つ名前です。'
+                        },
+                        kichihoui: {
+                            honnen: '東',
+                            gekkan: '南東',
+                            suishin: '旅行や引越しに最適な時期です。'
+                        }
+                    };
+                    
+                    setCalculationResult(mockResult);
+                    setShowSuccess(true);
+                    
+                    setTimeout(() => setShowSuccess(false), 5000);
+                    
+                } catch (error) {
+                    console.error('計算エラー:', error);
+                } finally {
+                    setIsCalculating(false);
+                }
+            };
+
+            // PDF生成
+            const handleGeneratePDF = () => {
+                console.log('PDF生成処理開始');
+                // 実際のPDF生成API呼び出し
+            };
+
+            return (
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <div className="app-container">
+                        {/* ヘッダー */}
+                        <div className="header">
+                            <Typography variant="h4" component="h1" sx={{ fontWeight: 600 }}>
+                                🌟 鑑定書作成ページ
+                            </Typography>
+                            <Typography variant="subtitle1" sx={{ opacity: 0.9, mt: 0.5 }}>
+                                クライアント情報を入力して統合鑑定書を1分で生成
+                            </Typography>
+                        </div>
+
+                        {/* メインコンテンツ */}
+                        <div className="main-content">
+                            {/* 入力フォームセクション */}
+                            <div className="form-section">
+                                <div className="section-title">
+                                    <Icon>person_add</Icon>
+                                    クライアント情報入力
+                                </div>
+                                
+                                {showSuccess && (
+                                    <Alert severity="success" sx={{ mb: 2 }}>
+                                        鑑定計算が完了しました！結果をご確認ください。
+                                    </Alert>
+                                )}
+
+                                <div className="form-group">
+                                    <TextField
+                                        fullWidth
+                                        label="氏名"
+                                        value={formData.name}
+                                        onChange={handleInputChange('name')}
+                                        error={!!errors.name}
+                                        helperText={errors.name}
+                                        variant="outlined"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-row">
+                                    <TextField
+                                        fullWidth
+                                        label="生年月日"
+                                        type="date"
+                                        value={formData.birthDate}
+                                        onChange={handleInputChange('birthDate')}
+                                        error={!!errors.birthDate}
+                                        helperText={errors.birthDate}
+                                        InputLabelProps={{ shrink: true }}
+                                        required
+                                    />
+                                    
+                                    <TextField
+                                        fullWidth
+                                        label="生まれ時間（任意）"
+                                        type="time"
+                                        value={formData.birthTime}
+                                        onChange={handleInputChange('birthTime')}
+                                        InputLabelProps={{ shrink: true }}
+                                    />
+                                </div>
+
+                                <div className="form-row">
+                                    <FormControl fullWidth error={!!errors.gender} required>
+                                        <InputLabel>性別</InputLabel>
+                                        <Select
+                                            value={formData.gender}
+                                            onChange={handleInputChange('gender')}
+                                            label="性別"
+                                        >
+                                            <MenuItem value="male">男性</MenuItem>
+                                            <MenuItem value="female">女性</MenuItem>
+                                        </Select>
+                                        {errors.gender && <div className="error-message">{errors.gender}</div>}
+                                    </FormControl>
+                                    
+                                    <TextField
+                                        fullWidth
+                                        label="出生地（任意）"
+                                        value={formData.birthPlace}
+                                        onChange={handleInputChange('birthPlace')}
+                                        variant="outlined"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <TextField
+                                        fullWidth
+                                        label="メールアドレス"
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange('email')}
+                                        error={!!errors.email}
+                                        helperText={errors.email}
+                                        variant="outlined"
+                                        required
+                                    />
+                                </div>
+
+                                <Button
+                                    className="generate-btn"
+                                    onClick={handleCalculate}
+                                    disabled={isCalculating}
+                                    startIcon={isCalculating ? <CircularProgress size={20} /> : <Icon>calculate</Icon>}
+                                >
+                                    {isCalculating ? '計算中...' : '鑑定計算実行'}
+                                </Button>
+                            </div>
+
+                            {/* プレビューセクション */}
+                            <div className="preview-section" style={{ position: 'relative' }}>
+                                <div className="section-title">
+                                    <Icon>preview</Icon>
+                                    鑑定結果プレビュー
+                                </div>
+
+                                {isCalculating && (
+                                    <div className="loading-overlay">
+                                        <CircularProgress size={60} />
+                                    </div>
+                                )}
+
+                                {!calculationResult ? (
+                                    <div className="preview-card">
+                                        <Icon sx={{ fontSize: 48, color: '#bdc3c7', mb: 2 }}>description</Icon>
+                                        <Typography variant="h6" color="textSecondary">
+                                            鑑定結果がここに表示されます
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                                            左側のフォームに情報を入力して「鑑定計算実行」ボタンをクリックしてください
+                                        </Typography>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {/* 九星気学結果 */}
+                                        <div className="result-section">
+                                            <Typography variant="h6" sx={{ mb: 1, color: '#34495e' }}>
+                                                🌟 九星気学
+                                            </Typography>
+                                            <div className="calculation-grid">
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">本命星</Typography>
+                                                    <Chip label={calculationResult.kyuseiKigaku.honmei} color="primary" />
+                                                </div>
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">月命星</Typography>
+                                                    <Chip label={calculationResult.kyuseiKigaku.gekkyu} color="secondary" />
+                                                </div>
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">日命星</Typography>
+                                                    <Chip label={calculationResult.kyuseiKigaku.nichikyu} color="success" />
+                                                </div>
+                                            </div>
+                                            <Typography variant="body2" sx={{ mt: 1 }}>
+                                                {calculationResult.kyuseiKigaku.seikaku}
+                                            </Typography>
+                                        </div>
+
+                                        {/* 姓名判断結果 */}
+                                        <div className="result-section">
+                                            <Typography variant="h6" sx={{ mb: 1, color: '#34495e' }}>
+                                                📝 姓名判断
+                                            </Typography>
+                                            <div className="calculation-grid">
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">総格</Typography>
+                                                    <Typography variant="h6">{calculationResult.seimeiHandan.soukaku}</Typography>
+                                                </div>
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">天格</Typography>
+                                                    <Typography variant="h6">{calculationResult.seimeiHandan.tenkaku}</Typography>
+                                                </div>
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">人格</Typography>
+                                                    <Typography variant="h6">{calculationResult.seimeiHandan.jinkaku}</Typography>
+                                                </div>
+                                            </div>
+                                            <Alert severity="success" sx={{ mt: 1 }}>
+                                                {calculationResult.seimeiHandan.hyoka}
+                                            </Alert>
+                                        </div>
+
+                                        {/* 吉方位結果 */}
+                                        <div className="result-section">
+                                            <Typography variant="h6" sx={{ mb: 1, color: '#34495e' }}>
+                                                🧭 吉方位
+                                            </Typography>
+                                            <div className="calculation-grid">
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">本年</Typography>
+                                                    <Chip label={calculationResult.kichihoui.honnen} color="primary" variant="outlined" />
+                                                </div>
+                                                <div className="calculation-item">
+                                                    <Typography variant="subtitle2">月間</Typography>
+                                                    <Chip label={calculationResult.kichihoui.gekkan} color="secondary" variant="outlined" />
+                                                </div>
+                                            </div>
+                                            <Typography variant="body2" sx={{ mt: 1 }}>
+                                                {calculationResult.kichihoui.suishin}
+                                            </Typography>
+                                        </div>
+
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            onClick={handleGeneratePDF}
+                                            startIcon={<Icon>picture_as_pdf</Icon>}
+                                            sx={{ mt: 2, width: '100%' }}
+                                        >
+                                            PDF鑑定書を生成
+                                        </Button>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </ThemeProvider>
+            );
+        };
+
+        // アプリケーションのレンダリング
+        ReactDOM.render(<KanteiCreatePage />, document.getElementById('root'));
+    </script>
+
+    <!--
+    【CF_06引き継ぎ情報】
+    UI要件: クライアント基本情報入力→九星気学・姓名判断自動計算→リアルタイムプレビュー→PDF生成
+    必要API: 
+      - POST /api/kantei/calculate (鑑定計算実行)
+      - GET /api/kantei/templates (81パターンテキスト取得)
+      - POST /api/kantei/generate-pdf (PDF鑑定書生成)
+    入力データ: {
+      name: string,
+      birth_date: date,
+      birth_time?: string,
+      gender: "male"|"female",
+      birth_place?: string,
+      email: string
+    }
+    出力データ: {
+      kyusei_kigaku: { honmei: string, gekkyu: string, nichikyu: string, seikaku: string },
+      seimei_handan: { soukaku: number, tenkaku: number, jinkaku: number, chikaku: number, gaikaku: number, hyoka: string },
+      kichihoui: { honnen: string, gekkan: string, suishin: string },
+      template_ids: number[]
+    }
+    UI文脈: 入力フォーム→計算実行→結果表示→PDF生成→次ページ（プレビュー・送信）への遷移
+    特記事項: 
+      - リアルタイムバリデーション必須
+      - 計算中のローディング表示
+      - 九星気学・姓名判断の複雑な計算処理
+      - 81パターンテキストの非同期取得
+      - エラーハンドリング（計算失敗時の表示）
+    -->
+</body>
+</html>

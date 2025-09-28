@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <title>姓名鑑定</title>
+    <meta charset='utf-8'>
+    <meta Content-Type='text/html'>
+    <meta Access-Control-Allow-Origin='*'>
+    <link rel="stylesheet" type="text/css" href="css/seimei.css">
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <script src="js/seimei.js"></script>
+</head>
+
+<body>
+    <h2>姓名鑑定</h2>
+    <a class='admin_link' href='./admin/seimei.php'>管理者用</a>
+    <div id='direction'>
+        <p>
+            このサイトの姓名鑑定は読み下し、五行、陰陽、天地の配合、画数で鑑定を行います。
+        </p>
+        <p>
+            一般的な画数だけで見る鑑定とは違い、人生・体質・人間関係・社会との関係性など細かく鑑定します。
+        </p>
+        <p>
+            単純な鑑定方法でないため、個別での鑑定と比べ精度は落ちますが
+            ご自身の名前を深く知るきっかけになれば幸いです。
+        </p>
+    </div>
+    <br />
+    <div id='app'>
+        <search-component></search-component>
+        <result-kousei-component></result-kousei-component>
+        <result-kantei-component></result-kantei-component>
+    </div>
+
+    <div id='after_kantei'>
+        <span class='button oisuta'>
+            <a href='https://kigaku-navi.com/how-to-use-seimeikantei/'>姓名鑑定の使い方</a>
+        </span>
+        <br />
+        <span class='button crocas'>
+            <a href='https://kigaku-navi.com/kantei-moushikomi/'>名付け・選名（改名）の申し込み</a>
+        </span>
+        <br />
+        <p>
+            ※ご依頼の方の九星も拝見して名付け・選名を行います。
+        </p>
+        <span class='button blue'>
+            <a href='https://kigaku-navi.com/kouza-info/'>講座・セミナ－情報</a>
+        </span>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+□必要ソフトウェア
+https://nodejs.org/en/
+=>Recommended For Most Users
+
+https://git-scm.com/downloads
+
+□インストール
+powershell(管理者）
+cd ソースディレクトリ
+npm install -g --production windows-build-tools
+npm install webpack webpack-cli -g
+npm install
+
+□起動
+./debug.bat
+
+http://localhost:3001/seimei_top.html
+
+
+
+□リリース方法
+./release.bat
+※jsファイルがreleaseフォルダ内へと生成される。
+生成されたrelease/js/seimei.jsをFFFTP等でサーバーへと移動させる。
+
