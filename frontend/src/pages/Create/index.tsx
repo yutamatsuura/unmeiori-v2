@@ -25,7 +25,7 @@ import {
   Logout as LogoutIcon,
   History as HistoryIcon
 } from '@mui/icons-material';
-import { kanteiAPI, authAPI, getAuthToken } from '../../services/api';
+import { kanteiAPI, authAPI, getAuthToken, kyuseiKigakuAPI, seimeiHandanAPI } from '../../services/api';
 import './styles.css';
 
 interface FormData {
@@ -170,7 +170,7 @@ const CreatePage: React.FC = () => {
     setShowSuccess(false);
 
     try {
-      // 統合APIを使用して鑑定計算を実行
+      // Phase 1.5: マイクロサービス直接呼び出し
       const kanteiRequest = {
         client_info: {
           surname: formData.surname,
@@ -181,10 +181,32 @@ const CreatePage: React.FC = () => {
         }
       };
 
-      console.log('統合API呼び出し:', kanteiRequest);
-      const result = await kanteiAPI.calculate(kanteiRequest);
+      console.log('Phase 1.5: マイクロサービス直接呼び出し開始:', kanteiRequest);
 
-      console.log('統合API結果:', result);
+      // 九星気学計算
+      const kyuseiResult = await kyuseiKigakuAPI.calculate(kanteiRequest);
+      console.log('九星気学結果:', kyuseiResult);
+
+      // 姓名判断計算
+      const seimeiData = {
+        surname: formData.surname,
+        given_name: formData.givenName
+      };
+      const seimeiResult = await seimeiHandanAPI.calculate(seimeiData);
+      console.log('姓名判断結果:', seimeiResult);
+
+      // 結果統合
+      const result = {
+        id: Date.now(), // 仮のID
+        kyusei_result: kyuseiResult,
+        seimei_result: seimeiResult,
+        combined_result: {
+          summary: '九星気学と姓名判断の結果が完了しました',
+          overall_fortune: '運勢良好'
+        }
+      };
+
+      console.log('Phase 1.5 統合結果:', result);
       setCalculationResult(result);
       setShowSuccess(true);
 
